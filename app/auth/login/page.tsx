@@ -14,7 +14,11 @@ interface userType {
 
 function Login() {
     const [loading, setLoading] = React.useState(false);
+
+    console.log('Before useRouter');
     const router = useRouter();
+    console.log('After useRouter', router);
+            
     const onLogin = async (values: userType) => {
         try {
             setLoading(true);
