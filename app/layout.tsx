@@ -3,6 +3,7 @@ import './globals.css'
 import ThemeProvider from './providers/ThemeProvider'
 import LayoutProvider from './providers/LayoutProvider'
 import next from '@/node_modules/next/index'
+import NavigationBar from './ui/homepage/NavigationBar'
 
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default function RootLayout({
       </head>
       <body>
         
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <NavigationBar/>
+            {children}</ThemeProvider>
           
       </body>
     </html>

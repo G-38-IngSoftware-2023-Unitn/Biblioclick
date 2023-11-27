@@ -5,7 +5,8 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
     return (
         <div><ConfigProvider theme={{
                 token: {
-                    colorPrimary: '#FFE0B2',
+                    "colorPrimary": "#dbbfa3",
+                    "colorInfo": "#dbbfa3",
                 }
             }}>{children}</ConfigProvider>
         </div>
