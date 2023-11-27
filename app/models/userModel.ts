@@ -14,11 +14,6 @@ export const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        deliveryAddresses: {
-            type: Array,
-            default: [],
-            required: false,
-        },
         isActive: {
             type: Boolean,
             default: true,
@@ -37,4 +32,4 @@ export const userSchema = new mongoose.Schema(
 );
 
 // if the model is already defined, use that model else create a new one
-export default mongoose.models["Users"] || mongoose.model("users", userSchema);
+export default mongoose.models["users"] || mongoose.model("users", userSchema);
