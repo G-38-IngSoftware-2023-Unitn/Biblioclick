@@ -22,6 +22,10 @@ body {
   padding: 0;
 }
 
+main {
+  min-height: 60vh;
+}
+
 /*button {
   height: 40px !important;
   border-radius: 0 !important;

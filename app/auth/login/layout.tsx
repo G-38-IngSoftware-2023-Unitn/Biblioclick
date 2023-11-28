@@ -10,21 +10,11 @@ export const metadata: Metadata = {
   description: 'BiblioClick Login page',
 }
 
-export default function RootLayout({
+export default function LoginLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <html lang="en">
-      <head>
-
-      </head>
-      <body>
-        
-          <ThemeProvider>{children}</ThemeProvider>
-          
-      </body>
-    </html>
-  )
+  return <main>{children}</main>
+  
 }
