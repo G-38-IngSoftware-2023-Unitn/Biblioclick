@@ -34,6 +34,10 @@ export async function POST(request: NextRequest) {
             httpOnly: true,
             path: "/",
         });
+        response.cookies.set("isLoggedIn", "true", {
+            httpOnly: false,
+            path: "/",
+        });
 
         return response;
     } catch (error: any) {

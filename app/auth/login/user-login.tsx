@@ -26,6 +26,7 @@ function UserLogin() {
             await axios.post("/api/auth/login/user-login", values);
             message.success("Login successful");
             router.push("/");
+            router.refresh();
         } catch (error: any) {
             message.error(error.response.data.message);
         } finally {
