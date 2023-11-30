@@ -6,6 +6,22 @@ export const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        surname:{
+            type: String,
+            required: true
+        },
+        codiceFiscale:{
+            type: String,
+            required: true
+        },
+        dateOfBirth:{
+            type: Date,
+            required: true
+        },
+        cityOfBirth:{
+            type: String,
+            required: true
+        },
         email: {
             type: String,
             required: true,
@@ -14,11 +30,16 @@ export const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        isActive: {
+        isVerified: {
             type: Boolean,
             default: false,
             required: true,
         },
+        isActive: {
+            type: Boolean,
+            default: false,
+            required: true,
+        }
 
     },
     {

@@ -8,6 +8,10 @@ import { useRouter } from "@/node_modules/next/navigation";
 
 interface userType {
     name: string;
+    surname: string;
+    codiceFiscale: string;
+    dateOfBirth: Date;
+    cityOfBirth: string;
     email: string;
     password: string;
 }
@@ -40,22 +44,30 @@ function Register() {
                 <Form.Item name="name" label="Name" rules={getAntdFieldRequiredRule("Please input your name")}>
                     <input type='text' />
                 </Form.Item>
+                <Form.Item name="surname" label="Surname" rules={getAntdFieldRequiredRule("Please input your surname")}>
+                    <input type='text' />
+                </Form.Item>
                 <Form.Item name="email" label="Email" rules={getAntdFieldRequiredRule("Please input your email")}>
                     <input type='email' />
                 </Form.Item>
-                <Form.Item name="password" label="password" rules={getAntdFieldRequiredRule("Please input your password")}>
+                <Form.Item name="password" label="Password" rules={getAntdFieldRequiredRule("Please input your password")}>
                     <input type='password' />
                 </Form.Item>
 
-                <div className="grid grid-cols-2 gap-4">
-                
-                    <Button type="primary" htmlType="submit" block loading={loading}>
-                    Register
-                    </Button>
-                    <Button htmlType="button" block loading={loading} className="bg-blue-400 text-blue-900 font-semibold">
-                    SPID 
-                    </Button>
-                </div>
+                <Form.Item name="codiceFiscale" label="Codice Fiscale" rules={getAntdFieldRequiredRule("Please input your codice fiscale")}>
+                    <input type='text' maxLength={16} className='uppercase'/> 
+                </Form.Item>
+                <Form.Item name="dateOfBirth" label="Date of birth" rules={getAntdFieldRequiredRule("Please input your date of birth")}>
+                    <input type='date' />
+                </Form.Item>
+                <Form.Item name="cityOfBirth" label="City of birth" rules={getAntdFieldRequiredRule("Please input your city of birth")}>
+                    <input type='text' />
+                </Form.Item>
+
+                <Button type="primary" htmlType="submit" block loading={loading} className="text-black">
+                Register
+                </Button>
+                 
 
                 <Link href="/auth/login" className="text-primary">Already have an account? Login</Link>
 

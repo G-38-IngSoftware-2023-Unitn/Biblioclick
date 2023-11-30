@@ -42,9 +42,9 @@ function LibrarianLogin() {
                     <input type="password" />
                 </Form.Item>
 
-                    <Button type="primary" htmlType="submit" block loading={loading} className="text-black">
-                    Login
-                    </Button>
+                <Button type="primary" htmlType="submit" block loading={loading} className="text-black">
+                Login
+                </Button>
 
                 <Link href="/auth/register" className="text-primary">
                     Don't have an account? Register
