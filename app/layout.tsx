@@ -6,6 +6,7 @@ import next from '@/node_modules/next/index'
 import NavigationBar from './ui/homepage/NavigationBar'
 import { inter } from '@/app/ui/fonts'
 import Footer from './ui/homepage/Footer'
+import HeaderBar from './ui/homepage/HeaderBar'
 
 
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         
           <ThemeProvider>
-            <NavigationBar/>
+            <HeaderBar/>
             {children}
             
             <Footer/>

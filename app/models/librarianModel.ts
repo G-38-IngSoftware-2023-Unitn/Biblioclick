@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 
-export const userSchema = new mongoose.Schema(
+export const librarianSchema = new mongoose.Schema(
     {
-        name: {
-            type: String,
-            required: true,
-        },
         email: {
             type: String,
             required: true,
@@ -14,12 +10,11 @@ export const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        isActive: {
+        isAdmin: {
             type: Boolean,
             default: false,
             required: true,
         },
-
     },
     {
         timestamps: true,
@@ -27,4 +22,4 @@ export const userSchema = new mongoose.Schema(
 );
 
 // if the model is already defined, use that model else create a new one
-export default mongoose.models["users"] || mongoose.model("users", userSchema);
+export default mongoose.models["librarians"] || mongoose.model("librarians", librarianSchema);
