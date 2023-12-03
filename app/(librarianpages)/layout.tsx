@@ -1,12 +1,7 @@
 import type { Metadata } from 'next'
-import './globals.css'
-import ThemeProvider from './providers/ThemeProvider'
-import LayoutProvider from './providers/LayoutProvider'
-import next from '@/node_modules/next/index'
-import NavigationBar from './ui/homepage/NavigationBar'
+import '@/app/globals.css'
+import ThemeProvider from '../providers/ThemeProvider'
 import { inter } from '@/app/ui/fonts'
-import Footer from './ui/homepage/Footer'
-import HeaderBar from './ui/homepage/HeaderBar'
 
 
 export const metadata: Metadata = {
@@ -27,10 +22,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         
           <ThemeProvider>
-            <HeaderBar/>
             {children}
-            
-            <Footer/>
           </ThemeProvider>
           
       </body>

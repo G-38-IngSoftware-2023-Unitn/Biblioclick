@@ -11,7 +11,6 @@ interface userType {
     surname: string;
     codiceFiscale: string;
     dateOfBirth: Date;
-    cityOfBirth: string;
     email: string;
     password: string;
 }
@@ -59,9 +58,6 @@ function Register() {
                 </Form.Item>
                 <Form.Item name="dateOfBirth" label="Date of birth" rules={getAntdFieldRequiredRule("Please input your date of birth")}>
                     <input type='date' />
-                </Form.Item>
-                <Form.Item name="cityOfBirth" label="City of birth" rules={getAntdFieldRequiredRule("Please input your city of birth")}>
-                    <input type='text' />
                 </Form.Item>
 
                 <Button type="primary" htmlType="submit" block loading={loading} className="text-black">
