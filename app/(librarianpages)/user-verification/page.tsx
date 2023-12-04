@@ -2,7 +2,7 @@
 import { Button, Form, message } from "antd";
 import { getAntdFieldRequiredRule } from '@/app/helpers/validation';
 import axios from "axios";
-import { useState } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import User from "@/app/models/userModel";
 
 interface userSearch {
@@ -23,6 +23,28 @@ interface userType {
 export default function userVerification() {
 
     const [userData, setUserData] = useState<userType>();
+
+    const [dataComponent, setDataComponent] = useState<ReactNode>();
+
+    useEffect(() => {
+        if(userData){
+            setDataComponent(
+                <div>
+                    <p> {userData?.name} </p>
+                    <p> {userData?.surname} </p>
+                    <p> {userData?.codiceFiscale} </p>
+                    <p> {JSON.stringify(userData?.dateOfBirth)} </p>
+                    <p> {userData?.email} </p>
+                    <p> {JSON.stringify(userData?.createdAt)} </p>
+                    <p> {JSON.stringify(userData?.isVerified)} </p>
+                    <p> {JSON.stringify(userData?.isActive)} </p>
+                    <Button>
+                        Verify (doesn't do anything just yet)
+                    </Button>
+                </div>
+            )
+        }
+    }, [userData])
 
     const searchByEmail = async (values: userSearch) => {
         
@@ -52,16 +74,7 @@ export default function userVerification() {
 
         </Form>
 
-        <div>
-            <p> {userData?.name} </p>
-            <p> {userData?.surname} </p>
-            <p> {userData?.codiceFiscale} </p>
-            <p> {JSON.stringify(userData?.dateOfBirth)} </p>
-            <p> {userData?.email} </p>
-            <p> {JSON.stringify(userData?.createdAt)} </p>
-            <p> {JSON.stringify(userData?.isVerified)} </p>
-            <p> {JSON.stringify(userData?.isActive)} </p>
-        </div>
+        {dataComponent}
 
         </main>
     )
