@@ -31,7 +31,7 @@ export default function userVerification() {
     const [dataComponent, setDataComponent] = useState<ReactNode>();
 
     const onVerify = async (values: userType) => {
-        axios.patch("/api/user-verification/verify-user", values).then((response) => {
+        await axios.post("/api/user-verification/verify-user", values).then((response) => {
             console.log(response.data);
         }).catch(error => {
             message.error(error.response.data.message);
@@ -40,6 +40,7 @@ export default function userVerification() {
 
     useEffect(() => {
         if(userData){
+            console.log(JSON.stringify(userData?._id));
             setDataComponent(
                 <Form layout='vertical' onFinish={onVerify}> 
                     <UserInputEdit name="email" label="Email" value={userData?.email}/>
@@ -50,7 +51,7 @@ export default function userVerification() {
                     <p> Created at: {JSON.stringify(userData?.createdAt)} </p>
                     <p> Verified: {JSON.stringify(userData?.isVerified)} </p>
                     <p> Active: {JSON.stringify(userData?.isActive)} </p>
-                    <input type="hidden" name="_id" value={JSON.stringify(userData?._id)}/>
+                    <Form.Item name="_id" className="hidden"><input type="hidden" value={JSON.stringify(userData?._id)}/></Form.Item>
                     <Button htmlType="submit">
                         Verify (doesn't do anything just yet)
                     </Button>

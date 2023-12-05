@@ -15,7 +15,7 @@ export default function UserInputEdit(props: any) {
     )
 
     return (
-        <Form.Item name={props.name} label={props.label} rules={getAntdFieldRequiredRule("This field is required")}>
+        <Form.Item name={props.name} label={props.label} rules={[{ required: !inputDisabled }]}>
             <Space.Compact>
                 <Input defaultValue={props.value} disabled={inputDisabled} type={props.type || "text"} /> {editButton}
             </Space.Compact>

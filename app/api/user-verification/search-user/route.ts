@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
         if (!findUser) {
             throw new Error("User doesn't exist");
         }
+
         return NextResponse.json({
             data: findUser,
         });
