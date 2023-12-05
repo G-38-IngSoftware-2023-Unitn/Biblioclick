@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
         const reqBody = await request.json();
     
         //find user
-        const findUser = await User.findOne({ email: reqBody.email }).select("-password -_id -__v -updatedAt");
+        const findUser = await User.findOne({ email: reqBody.email }).select("-password -__v -updatedAt");
         if (!findUser) {
             throw new Error("User doesn't exist");
         }

@@ -4,12 +4,16 @@ import { getAntdFieldRequiredRule } from '@/app/helpers/validation';
 import axios from "axios";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import User from "@/app/models/userModel";
+import UserInputEdit from "@/app/ui/userVerification/userInputEdit";
+import { error } from "console";
+import { ObjectId } from "mongodb";
 
 interface userSearch {
     email: string;
 }
 
 interface userType {
+    _id: ObjectId;
     name: string;
     surname: string;
     codiceFiscale: string;
@@ -21,27 +25,36 @@ interface userType {
 }
 
 export default function userVerification() {
-
+    
     const [userData, setUserData] = useState<userType>();
 
     const [dataComponent, setDataComponent] = useState<ReactNode>();
 
+    const onVerify = async (values: userType) => {
+        axios.patch("/api/user-verification/verify-user", values).then((response) => {
+            console.log(response.data);
+        }).catch(error => {
+            message.error(error.response.data.message);
+        })
+    }
+
     useEffect(() => {
         if(userData){
             setDataComponent(
-                <div>
-                    <p> {userData?.name} </p>
-                    <p> {userData?.surname} </p>
-                    <p> {userData?.codiceFiscale} </p>
-                    <p> {JSON.stringify(userData?.dateOfBirth)} </p>
-                    <p> {userData?.email} </p>
-                    <p> {JSON.stringify(userData?.createdAt)} </p>
-                    <p> {JSON.stringify(userData?.isVerified)} </p>
-                    <p> {JSON.stringify(userData?.isActive)} </p>
-                    <Button>
+                <Form layout='vertical' onFinish={onVerify}> 
+                    <UserInputEdit name="email" label="Email" value={userData?.email}/>
+                    <UserInputEdit value={userData?.name} name="name" label="Name"/>
+                    <UserInputEdit value={userData?.surname} name="surname" label="Surname"/>
+                    <UserInputEdit value={userData?.codiceFiscale} name="codiceFiscale" label="Codice Fiscale"/>
+                    <p> Date of Birth: {JSON.stringify(userData?.dateOfBirth)} </p>
+                    <p> Created at: {JSON.stringify(userData?.createdAt)} </p>
+                    <p> Verified: {JSON.stringify(userData?.isVerified)} </p>
+                    <p> Active: {JSON.stringify(userData?.isActive)} </p>
+                    <input type="hidden" name="_id" value={JSON.stringify(userData?._id)}/>
+                    <Button htmlType="submit">
                         Verify (doesn't do anything just yet)
                     </Button>
-                </div>
+                </Form>
             )
         }
     }, [userData])
@@ -49,7 +62,7 @@ export default function userVerification() {
     const searchByEmail = async (values: userSearch) => {
         
         try{
-        await axios.post("/api/user-verification", values).then((response) => {
+        await axios.post("/api/user-verification/search-user", values).then((response) => {
             setUserData(response.data.data);
         });
         message.success("Search successful");
