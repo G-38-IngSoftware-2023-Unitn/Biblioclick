@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
-import './globals.css'
-import ThemeProvider from './providers/ThemeProvider'
-import LayoutProvider from './providers/LayoutProvider'
-import next from '@/node_modules/next/index'
+import '@/app/globals.css'
+import ThemeProvider from '../providers/ThemeProvider'
+import { inter } from '@/app/ui/fonts'
 
 
 export const metadata: Metadata = {
@@ -18,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-
+        <link rel="icon" href="/BiblioClickLogo.svg" sizes="any" />
       </head>
-      <body>
+      <body className={`${inter.className} antialiased`}>
         
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
           
       </body>
     </html>

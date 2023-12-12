@@ -6,24 +6,38 @@ export const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        surname:{
+            type: String,
+            required: true
+        },
+        codiceFiscale:{
+            type: String,
+            required: true,
+            unique: true,
+        },
+        dateOfBirth:{
+            type: Date,
+            required: true
+        },
         email: {
             type: String,
             required: true,
+            unique: true,
         },
         password: {
             type: String,
             required: true
         },
-        isActive: {
-            type: Boolean,
-            default: true,
-            required: true,
-        },
-        isAdmin: {
+        isVerified: {
             type: Boolean,
             default: false,
-            required: false,
+            required: true,
         },
+        isActive: {
+            type: Boolean,
+            default: false,
+            required: true,
+        }
 
     },
     {
