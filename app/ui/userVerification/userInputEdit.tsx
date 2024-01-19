@@ -1,7 +1,6 @@
 import { Button, Form, Input, Space } from "antd"
 import { EditOutlined } from "@ant-design/icons"
 import { useState } from "react";
-import { getAntdFieldRequiredRule } from "@/app/helpers/validation";
 
 export default function UserInputEdit(props: any) {
 

@@ -1,12 +1,11 @@
 "use client"
-import { Button, Form, message } from "antd";
+import { Button, Form, Input, Space, message } from "antd";
 import { getAntdFieldRequiredRule } from '@/app/helpers/validation';
 import axios from "axios";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
-import User from "@/app/models/userModel";
-import UserInputEdit from "@/app/ui/userVerification/userInputEdit";
-import { error } from "console";
 import { ObjectId } from "mongodb";
+import UserVerificationCard from "@/app/ui/userVerification/userVerificationCard";
+import { EditOutlined } from "@ant-design/icons";
 
 interface userSearch {
     email: string;
@@ -24,45 +23,52 @@ interface userType {
     isActive: boolean;
 }
 
+interface userMiniType {
+    _id: string;
+}
+
 export default function userVerification() {
+//test 
+    const onVerify = async (values: userMiniType) => {
+        try {
+            console.log(values);
+            await axios.post("/api/user-verification/verify-user", values).then((response) => {
+                console.log(response.data);
+            })
+        } catch (error: any) {
+            message.error(error.response.data.message);
+        }
+    }
+
+    //end test
+
+
     
     const [userData, setUserData] = useState<userType>();
 
-    const [dataComponent, setDataComponent] = useState<ReactNode>();
-
-    const onVerify = async (values: userType) => {
-        await axios.post("/api/user-verification/verify-user", values).then((response) => {
-            console.log(response.data);
-        }).catch(error => {
-            message.error(error.response.data.message);
-        })
-    }
+    const [dataComponent, setDataComponent] = useState<boolean>();
 
     useEffect(() => {
-        if(userData){
-            console.log(JSON.stringify(userData?._id));
-            setDataComponent(
-                <Form layout='vertical' onFinish={onVerify}> 
-                    <UserInputEdit name="email" label="Email" value={userData?.email}/>
-                    <UserInputEdit value={userData?.name} name="name" label="Name"/>
-                    <UserInputEdit value={userData?.surname} name="surname" label="Surname"/>
-                    <UserInputEdit value={userData?.codiceFiscale} name="codiceFiscale" label="Codice Fiscale"/>
-                    <p> Date of Birth: {JSON.stringify(userData?.dateOfBirth)} </p>
-                    <p> Created at: {JSON.stringify(userData?.createdAt)} </p>
-                    <p> Verified: {JSON.stringify(userData?.isVerified)} </p>
-                    <p> Active: {JSON.stringify(userData?.isActive)} </p>
-                    <Form.Item name="_id" className="hidden"><input type="hidden" value={JSON.stringify(userData?._id)}/></Form.Item>
-                    <Button htmlType="submit">
-                        Verify (doesn't do anything just yet)
-                    </Button>
-                </Form>
-            )
+        if(userData){ 
+            setDataComponent(true);
+            // setDataComponent(
+            //     <UserVerificationCard userData={userData}/>
+            // )
+            // setDataComponent (
+            //     <Form key={2} layout='vertical' onFinish={onVerify}> 
+            //         <Form.Item name="_id" className="hidden"><input type="hidden" value={JSON.stringify(userData?._id)}/></Form.Item>
+            //         <Button type="primary" htmlType="submit" block className="text-black">
+            //             Verify (doesn't do anything just yet)
+            //         </Button>
+            //     </Form>
+            // )
         }
     }, [userData])
 
     const searchByEmail = async (values: userSearch) => {
         
         try{
+            console.log(values);
         await axios.post("/api/user-verification/search-user", values).then((response) => {
             setUserData(response.data.data);
         });
@@ -76,10 +82,10 @@ export default function userVerification() {
 
         <main>
 
-        <Form layout="vertical" onFinish={searchByEmail}> 
+        <Form key={1} layout="vertical" onFinish={searchByEmail}> 
 
             <Form.Item name="email" label="Email" rules={getAntdFieldRequiredRule("Please input the email to verify")}>
-                <input type='email' />
+                <Input type='email' />
             </Form.Item>
 
             <Button type="primary" htmlType="submit" block className="text-black">
@@ -88,7 +94,17 @@ export default function userVerification() {
 
         </Form>
 
-        {dataComponent}
+
+         
+        <Form key={2} layout='vertical' onFinish={onVerify}> 
+                <Form.Item name="_id" className="hidden"><input type="hidden" value="fiuhuih"/></Form.Item>
+                <Form.Item name="email" label="Email">
+                <Input defaultValue="fds" disabled type="text" />
+                </Form.Item>
+                <Button type="primary" htmlType="submit" block className="text-black">
+                    Verify (doesn't do anything just yet)
+                </Button>
+        </Form>
 
         </main>
     )

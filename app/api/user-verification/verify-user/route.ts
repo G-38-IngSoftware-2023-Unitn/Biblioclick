@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
             throw new Error("User doesn't exist");
         };
 
-        if(reqBody.name) findUser.data.name = reqBody.name;
+        if(reqBody.data) findUser.data.name = reqBody.name;
 
         return NextResponse.json({
             data: findUser,
