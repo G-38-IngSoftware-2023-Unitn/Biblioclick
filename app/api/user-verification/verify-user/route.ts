@@ -20,17 +20,26 @@ interface userType {
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
-
         console.log(reqBody);
-        console.log(request);
 
         const findUser = await User.findById(reqBody._id);
         if(!findUser) {
             throw new Error("User doesn't exist");
         };
 
-        if(reqBody.data) findUser.data.name = reqBody.name;
+        if(reqBody.name) findUser.name = reqBody.name;
+        if(reqBody.surname) findUser.surname = reqBody.surname;
+        if(reqBody.codiceFiscale) findUser.codiceFiscale = reqBody.codiceFiscale;
+        if(reqBody.dateOfBirth) findUser.dateOfBirth = reqBody.dateOfBirth;
+        if(reqBody.email) findUser.email = reqBody.email;
+        findUser.isActive = true;
+        findUser.isVerified = true;
 
+        console.log("findUser");
+        console.log(findUser);
+
+        await findUser.save();
+        
         return NextResponse.json({
             data: findUser,
         });

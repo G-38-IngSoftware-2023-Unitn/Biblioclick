@@ -15,6 +15,10 @@ export async function POST(request: NextRequest) {
             throw new Error("User doesn't exist");
         }
 
+        if (findUser.isVerified) {
+            throw new Error("User is already verified");
+        }
+
         return NextResponse.json({
             data: findUser,
         });
