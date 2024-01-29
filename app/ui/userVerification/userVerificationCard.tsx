@@ -27,7 +27,6 @@ export default function UserVerificationCard(props: any) {
 
     const onVerify = async (values: userType) => {
         try {
-            console.log(values);
             await axios.post("/api/user-verification/verify-user", values).then((response) => {
                 console.log(response.data);
             })

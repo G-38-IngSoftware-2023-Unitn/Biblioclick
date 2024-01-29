@@ -40,7 +40,6 @@ export default function userVerification() {
     const searchByEmail = async (values: userSearch) => {
 
         try {
-            console.log(values);
             await axios.post("/api/user-verification/search-user", values).then((response) => {
                 setUserData(response.data.data);
             });
