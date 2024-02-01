@@ -20,7 +20,7 @@ interface userType {
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
-        console.log(reqBody);
+        //console.log(reqBody);
 
         const findUser = await User.findById(reqBody._id).select("-password");
         if(!findUser) {
@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
         findUser.isActive = true;
         findUser.isVerified = true;
 
-        console.log("findUser");
-        console.log(findUser);
+        //console.log("findUser");
+        //console.log(findUser);
 
         await findUser.save();
         

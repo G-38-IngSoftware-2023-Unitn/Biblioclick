@@ -62,9 +62,9 @@ function AccountInformation() {
 
     const onModify = async (values: userType) => {
         try {
-            console.log(values);
+            //console.log(values);
             await axios.post("/api/account/information/modify", values).then((response) => {
-                console.log(response.data);
+                //console.log(response.data);
                 router.push("/");
                 router.refresh();
                 
