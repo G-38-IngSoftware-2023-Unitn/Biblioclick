@@ -27,7 +27,7 @@ export default async function TableSearchCatalogue({
     return(
         <div>
             {results?.map((document: documentType) => (
-                <TableSearchElement doc={document}/>
+                <TableSearchElement key={document._id.toString()} doc={JSON.parse(JSON.stringify(document))}/>
             ))}
         </div>
     );

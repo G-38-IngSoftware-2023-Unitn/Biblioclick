@@ -1,7 +1,5 @@
 import { connectDB } from "@/configs/dbConfig";
 import DocInformation from "@/app/models/documentModel";
-import { NextRequest, NextResponse } from 'next/server';
-import { ObjectId } from "mongoose";
 
 connectDB();
 
@@ -26,9 +24,7 @@ export async function fetchDocumentsSimple(query: string, currentPage: number, i
 export async function fetchDocumentById(id: string) {
   try {
     const query = DocInformation.findById(id).select("-_id -createdAt -updatedAt -__v");
-    const result = await query.exec();
-    console.log(result);
-    return result;
+    return await query.exec();
 
   } catch (error: any) {
     console.log("Database error", error);

@@ -21,7 +21,7 @@ export default function PaginationURL(props: any) {
     if (props?.numberOfDocs > 0) return(
         <Pagination
               defaultCurrent={1} current={props?.currentPage} defaultPageSize={10} pageSize={props?.itemsPerPage}
-              total={props?.numberOfDocs} onChange={onChangePagination}
+              total={props?.numberOfDocs} onChange={onChangePagination} className="mt-5"
         />
     )
 

@@ -16,7 +16,7 @@ export default async function docView( { params }: {
     params: {documentId: string}
 }) {
     
-    const docData = await fetchDocumentById(params.documentId);
+    const docData: documentType = await fetchDocumentById(params.documentId);
 
     return (
         <div>

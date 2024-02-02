@@ -19,7 +19,7 @@ export default function SearchURLInput() {
     }
 
     return (
-        <Search placeholder="Search Document" onSearch={onSearch} enterButton 
+        <Search className="mb-5" placeholder="Search Document" onSearch={onSearch} enterButton 
         defaultValue={searchParams.get('query')?.toString()}/>
     )
 }
