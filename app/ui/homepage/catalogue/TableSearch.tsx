@@ -1,5 +1,6 @@
 import { fetchDocumentsSimple } from "@/app/serverside/data-fetching";
 import { ObjectId } from "mongoose";
+import TableSearchElement from "./TableSearchElement";
 interface documentType {
     _id: ObjectId
     title: string;
@@ -23,16 +24,10 @@ export default async function TableSearchCatalogue({
     
     const results = await fetchDocumentsSimple(query, currentPage, ippg);
 
-
-    ///TODO:
-    ///crea elemento che visualizza tutto il robo
     return(
         <div>
             {results?.map((document: documentType) => (
-                <div
-                    key={document._id.toString()}>
-                    <p>{document.title}</p>
-                </div>
+                <TableSearchElement doc={document}/>
             ))}
         </div>
     );
