@@ -1,12 +1,9 @@
-import SearchURLInput from "@/app/ui/homepage/SearchURL";
-import TableSearchCatalogue from "@/app/ui/homepage/TableSearch";
+import { fetchDocumentsAmount } from "@/app/serverside/data-fetching";
+import PaginationURL from "@/app/ui/homepage/catalogue/PaginationURL";
+import SearchURLInput from "@/app/ui/homepage/catalogue/SearchURL";
+import TableSearchCatalogue from "@/app/ui/homepage/catalogue/TableSearch";
 import { LoadingOutlined } from "@ant-design/icons";
-import { message } from "antd";
-import Search, { SearchProps } from "antd/es/input/Search";
-import axios from "axios";
-import { query } from "firebase/database";
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 
 interface documentType {
     title: string;
@@ -31,7 +28,9 @@ export default async function Catalogo({
 
     const query2 = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const itemsPerPage = Number(searchParams?.ippg) || 25;
+    const itemsPerPage = Number(searchParams?.ippg) || 10;
+
+    const numberOfDocs = await fetchDocumentsAmount(query2);
 
     return (
 
@@ -41,6 +40,9 @@ export default async function Catalogo({
             <Suspense key={query2 + currentPage + itemsPerPage} fallback={<LoadingOutlined/>}>
             <TableSearchCatalogue query={query2} currentPage={currentPage} ippg={itemsPerPage} />
             </Suspense>
+
+            <PaginationURL
+              currentPage={currentPage} itemsPerPage={itemsPerPage} numberOfDocs={numberOfDocs} />
         </div>
 
         )
