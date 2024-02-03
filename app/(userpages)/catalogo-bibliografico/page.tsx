@@ -15,7 +15,6 @@ interface documentType {
     publisher: string;
 }
 
-
 export default async function Catalogo({
     searchParams,
   }: {

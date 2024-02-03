@@ -1,7 +1,10 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import {Menu} from "antd";
 import type { MenuProps } from 'antd';
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import path from "path";
 
 const items: MenuProps['items'] = [
     {
@@ -10,7 +13,7 @@ const items: MenuProps['items'] = [
           Home
         </Link>
       ),
-      key: 'Home',
+      key: 'home',
     },
     {
       label:( 
@@ -18,7 +21,7 @@ const items: MenuProps['items'] = [
           Catalogo
         </Link>
       ),
-      key: 'Catalogo',
+      key: 'catalogo-bibliografico',
     },
     {
       label:( 
@@ -26,7 +29,7 @@ const items: MenuProps['items'] = [
           Servizi
         </Link>
       ),
-      key: 'Servizi',
+      key: 'servizi',
     },
     {
       label: (
@@ -34,13 +37,32 @@ const items: MenuProps['items'] = [
           Orari e date
         </Link>
       ),
-      key: 'Hours and Dates',
+      key: 'orari',
     },
   ];
 
 export default function NavigationBar() {
-    return (
-      <Menu className="bg-[#dbbfa3] px-80 text-lg min-h-[2.5rem] pt-1" mode="horizontal" items={items} />
-    )
 
+  const pathname = usePathname();
+
+  const [current, setCurrent] = useState("home");
+
+  useEffect(() => {
+    const split = pathname?.split("/")[1];
+    console.log(split);
+
+    if(split === "") {
+      setCurrent("home");
+    }
+    else{
+      setCurrent(split);
+    }
+  }, [pathname])
+
+  return (
+    <Menu className="bg-[#dbbfa3] px-80 text-lg min-h-[2.5rem] pt-1" 
+    mode="horizontal" items={items}
+    selectedKeys={[current]}
+      />
+  )
 };

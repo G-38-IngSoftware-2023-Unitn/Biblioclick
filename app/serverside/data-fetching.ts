@@ -1,5 +1,6 @@
 import { connectDB } from "@/configs/dbConfig";
 import DocInformation from "@/app/models/documentModel";
+import mongoose, { ObjectId } from "mongoose";
 
 connectDB();
 
