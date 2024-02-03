@@ -1,4 +1,4 @@
-import { fetchDocumentById } from "@/app/serverside/data-fetching";
+import { fetchDocumentById } from "@/app/api/serverside/data-fetching";
 import { ObjectId } from "mongoose";
 import Image from "next/image";
 

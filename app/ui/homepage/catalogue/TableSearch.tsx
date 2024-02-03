@@ -1,4 +1,4 @@
-import { fetchDocumentsSimple } from "@/app/serverside/data-fetching";
+import { fetchDocumentsSimple } from "@/app/api/serverside/data-fetching";
 import { ObjectId } from "mongoose";
 import TableSearchElement from "./TableSearchElement";
 interface documentType {

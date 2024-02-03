@@ -1,4 +1,4 @@
-import { fetchDocumentsAmount } from "@/app/serverside/data-fetching";
+import { fetchDocumentsAmount } from "@/app/api/serverside/data-fetching";
 import PaginationURL from "@/app/ui/homepage/catalogue/PaginationURL";
 import SearchURLInput from "@/app/ui/homepage/catalogue/SearchURL";
 import TableSearchCatalogue from "@/app/ui/homepage/catalogue/TableSearch";
