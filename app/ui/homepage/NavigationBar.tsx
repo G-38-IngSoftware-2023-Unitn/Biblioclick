@@ -60,9 +60,12 @@ export default function NavigationBar() {
   }, [pathname])
 
   return (
-    <Menu className="bg-[#dbbfa3] px-80 text-lg min-h-[2.5rem] pt-1" 
-    mode="horizontal" items={items}
-    selectedKeys={[current]}
-      />
+    <div style={{paddingLeft: "16%", paddingRight: "16%", backgroundColor: "#dbbfa3"}}>
+      <Menu 
+      className="bg-[#dbbfa3] text-lg min-h-[2.5rem] pt-1" 
+      mode="horizontal" items={items}
+      selectedKeys={[current]}
+        />
+    </div>
   )
 };

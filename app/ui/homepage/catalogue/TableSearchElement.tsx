@@ -16,10 +16,11 @@ export default async function TableSearchElement(props: any) {
     const doc: documentType = props?.doc;
 
     return(
-        <a href={"/catalogo-bibliografico/" + doc._id} className="no-underline text-black cursor-pointer grow my-4">
-            <div
-            key={doc._id}
-            className="rounded bg-[#F9EFE5] flex flex-row p-2">
+        
+        <div
+        key={doc._id}
+        className="rounded bg-[#F9EFE5]">
+            <a href={"/catalogo-bibliografico/" + doc._id} className="no-underline text-black cursor-pointer grow p-2 flex flex-row my-4">
                 <div className="shrink-0 relative w-40 h-40">
                     <Image
                         fill={true}
@@ -29,9 +30,10 @@ export default async function TableSearchElement(props: any) {
                 <div className="px-5">
                     <p className="font-semibold text-xl mb-0.5 mt-2">{doc?.title}</p>
                     <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date.substring(0,4)}</p>
-                    <p className="italic text-blue-900 font-medium">{doc?.author}</p>
+                    <p className="italic text-blue-900 font-medium mt-1.5">{doc?.author}</p>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
+        
     )
 }

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const reservationSchema = new mongoose.Schema(
+export const loanSchema = new mongoose.Schema(
     {
         documentCopyId: {
             type: String,
@@ -14,8 +14,6 @@ export const reservationSchema = new mongoose.Schema(
             type: Date,
             required: true,
         },
-        
-        
     },
     {
         timestamps: true,
@@ -23,4 +21,4 @@ export const reservationSchema = new mongoose.Schema(
 );
 
 // if the model is already defined, use that model else create a new one
-export default mongoose.models["reservations"] || mongoose.model("reservations", reservationSchema);
+export default mongoose.models["loans"] || mongoose.model("loans", loanSchema);
