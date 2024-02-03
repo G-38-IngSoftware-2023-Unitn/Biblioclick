@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "@/node_modules/next/server";
 
-export async function middleware(request:NextRequest) {
+export function middleware(request:NextRequest) {
     console.log("middleware executed: " + request.nextUrl.pathname);
-    let isPublicRoute = false;
+    let isPublicRoute = true;
     if (
-        request.nextUrl.pathname === "/auth/login" ||
-        request.nextUrl.pathname === "/auth/register" )
+        request.nextUrl.pathname.startsWith("/account"))
         {
-            isPublicRoute = true;
+            isPublicRoute = false;
         }
     // if the token is not present and the route is not public, redirect to login
     const token = request.cookies.get("token")?.value || "";
@@ -19,12 +18,10 @@ export async function middleware(request:NextRequest) {
     if (token && isPublicRoute){
         return NextResponse.redirect(new URL("/", request.url));
     }
-
-    return NextResponse.next;
     
 }
 
 //public pages
 export const config = {
-    matcher: ["/auth/login", "/auth/register", "/"],
+    matcher: ["/auth/:path*", "/account/:path*"],
 };

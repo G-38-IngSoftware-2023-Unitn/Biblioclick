@@ -1,7 +1,6 @@
 import { Button, Form, Input, Space } from "antd"
 import { EditOutlined } from "@ant-design/icons"
 import { useState } from "react";
-import { getAntdFieldRequiredRule } from "@/app/helpers/validation";
 
 export default function UserInputEdit(props: any) {
 
@@ -14,11 +13,30 @@ export default function UserInputEdit(props: any) {
         </Button>
     )
 
-    return (
-        <Form.Item name={props.name} label={props.label} rules={[{ required: !inputDisabled }]}>
+    if (props.type=="date") return (
+        <Form.Item name={props.name} label={props.label} rules={[{ required: !inputDisabled }]} 
+        initialValue={props.value}>
             <Space.Compact>
-                <Input defaultValue={props.value} disabled={inputDisabled} type={props.type || "text"} /> {editButton}
+                <Input defaultValue={props.value} disabled={inputDisabled} type="date" /> {editButton}
             </Space.Compact>
         </Form.Item>
     )
+
+    if (props.type=="codFisc") return (
+        <Form.Item name={props.name} label={props.label} rules={[{ required: !inputDisabled }]} initialValue={props.value}>
+            <Space.Compact>
+                <Input defaultValue={props.value} disabled={inputDisabled} type="text" maxLength={16} className='uppercase'/> {editButton}
+            </Space.Compact>
+        </Form.Item>
+    )
+
+    return (
+        <Form.Item name={props.name} label={props.label} rules={[{ required: !inputDisabled }]} initialValue={props.value}>
+            <Space.Compact>
+                <Input defaultValue={props.value} disabled={inputDisabled} type="text" /> {editButton}
+            </Space.Compact>
+        </Form.Item>
+    )
+
+    
 }

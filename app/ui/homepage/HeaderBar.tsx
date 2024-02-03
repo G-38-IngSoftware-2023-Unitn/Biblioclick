@@ -12,7 +12,7 @@ export default function HeaderBar() {
 
     return (
         <header className="flex w-full flex-col">
-            <div className="bg-[#E9DBC9] px-80 items-center flex justify-between">
+            <div style={{paddingLeft: "16%", paddingRight: "16%"}} className="bg-[#E9DBC9] px-80 items-center flex justify-between">
                 <div className="flex-row flex items-center">
                     <Image 
                         src="/BiblioClickLogo.svg"
