@@ -1,5 +1,7 @@
 import { NextRequest } from "@/node_modules/next/server";
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
+
+
 
 export const validateJWT = async (request: NextRequest) => {
     try {
@@ -13,6 +15,6 @@ export const validateJWT = async (request: NextRequest) => {
         return decryptedToken.id;
 
     } catch (error: any) {
-        throw new Error(error.message);
+        throw error;
     }
 };

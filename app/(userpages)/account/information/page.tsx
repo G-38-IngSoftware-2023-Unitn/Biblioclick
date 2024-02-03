@@ -45,30 +45,28 @@ function AccountInformation() {
         }
     }, [userData])
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                await axios.get("/api/auth/currentuser").then((response) => {
-                    setUserData(response.data.data);
-                });
-                message.success("Search successful");
-            } catch (error: any) {
-                message.error(error.response.data.message);
-            }
+    async function fetchUserData() {
+        try {
+            await axios.get("/api/auth/currentuser").then((response) => {
+                setUserData(response.data.data);
+            });
+        } catch (error: any) {
+            console.log("it's here");
+            router.refresh();
+            message.error(error.response.data.message);
         }
+    }
 
+    useEffect(() => {
         fetchUserData();
     }, [])
 
     const onModify = async (values: userType) => {
         try {
             //console.log(values);
-            await axios.post("/api/account/information/modify", values).then((response) => {
-                //console.log(response.data);
-                router.push("/");
-                router.refresh();
-                
-            })
+            await axios.post("/api/account/information/modify", values);
+            router.push("/account");
+            router.refresh();
         } catch (error: any) {
             message.error(error.response.data.message);
         }

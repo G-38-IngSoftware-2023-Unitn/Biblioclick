@@ -15,7 +15,6 @@ export const reservationSchema = new mongoose.Schema(
             required: true,
         },
         
-        
     },
     {
         timestamps: true,

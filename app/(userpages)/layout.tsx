@@ -1,12 +1,9 @@
 import type { Metadata } from 'next'
 import '@/app/globals.css'
 import ThemeProvider from '@/app/providers/ThemeProvider'
-import LayoutProvider from '@/app/providers/LayoutProvider'
-import next from '@/node_modules/next/index'
-import NavigationBar from '@/app/ui/homepage/NavigationBar'
 import { inter } from '@/app/ui/fonts'
-import Footer from '@/app/ui/homepage/Footer'
-import HeaderBar from '@/app/ui/homepage/HeaderBar'
+import Footer from '@/app/ui/navigation-header/Footer'
+import HeaderBar from '@/app/ui/navigation-header/HeaderBar'
 
 
 export const metadata: Metadata = {

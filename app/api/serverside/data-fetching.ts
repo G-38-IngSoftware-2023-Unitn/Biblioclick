@@ -1,20 +1,77 @@
 import { connectDB } from "@/configs/dbConfig";
 import DocInformation from "@/app/models/documentModel";
-import mongoose, { ObjectId } from "mongoose";
+import DocCopy from "@/app/models/documentCopiesModel";
+import mongoose from "mongoose";
+import { aggregateFieldEqual } from "firebase/firestore";
 
 connectDB();
 
+interface documentCopy {
+  documentId: string,
+  reservationStatus: boolean,
+  loanStatus: boolean,
+  isLoanable: boolean,
+}
+
 export async function fetchDocumentsSimple(query: string, currentPage: number, ippg: number) {
     try {
-        const queryMongoose = DocInformation.find({ $text: { $search: query}},
-          {score: {$meta: 'textScore'}})
-          .sort({ score: { $meta: 'textScore'}})
-          .skip(ippg * (currentPage - 1))
-          .limit(ippg);
+      const queryMongoose = DocInformation.find({ $text: { $search: query}},
+        {score: {$meta: 'textScore'}})
+        .sort({ score: { $meta: 'textScore'}})
+        .skip(ippg * (currentPage - 1))
+        .limit(ippg);
+        
+      const result = await queryMongoose.exec();
+      if(result.length == 0) return;
 
-        const result = await queryMongoose.exec();
+      const resultIds = result.map((document) => {return document.id});
 
-        return result;
+      const aggr = await DocCopy.aggregate([
+        {
+          $match: {documentId: { $in: resultIds}}
+        },
+        {
+          $group: {
+            _id: "$documentId",
+            reservedDocuments: {
+              $sum: {
+                $cond: [
+                  "$reservationStatus",
+                  1,
+                  0
+                ]
+              }
+            },
+            loanedDocuments: {
+              $sum: {
+                $cond: [
+                  "$loanStatus",
+                  1,
+                  0
+                ]
+              }
+            },
+            loanable: {
+              $sum: {
+                $cond: [
+                  "$isLoanable",
+                  1,
+                  0
+                ]
+              }
+            },
+          }
+        }
+        
+      ]);
+
+      const returnValue = result.map((document) => {
+        const second = aggr.find((docCopy) => docCopy._id === document.id);
+        delete second._id;
+        return {...document.toObject(), ...second};
+      });
+
+      return returnValue;
 
     } catch (error: any) {
       console.log("Database error", error);
@@ -25,7 +82,48 @@ export async function fetchDocumentsSimple(query: string, currentPage: number, i
 export async function fetchDocumentById(id: string) {
   try {
     const query = DocInformation.findById(id).select("-_id -createdAt -updatedAt -__v");
-    return await query.exec();
+    const document = await query.exec();
+
+    const aggr = await DocCopy.aggregate([
+      {
+        $match: {documentId: id}
+      },
+      {
+        $group: {
+          _id: "$documentId",
+          reservedDocuments: {
+            $sum: {
+              $cond: [
+                "$reservationStatus",
+                1,
+                0
+              ]
+            }
+          },
+          loanedDocuments: {
+            $sum: {
+              $cond: [
+                "$loanStatus",
+                1,
+                0
+              ]
+            }
+          },
+          loanable: {
+            $sum: {
+              $cond: [
+                "$isLoanable",
+                1,
+                0
+              ]
+            }
+          },
+        }
+      }
+      
+    ]);
+
+    return {...document.toObject(), ...aggr[0]};
 
   } catch (error: any) {
     console.log("Database error", error);
@@ -48,26 +146,3 @@ export async function fetchDocumentsAmount(query: string) {
       throw new Error('Failed to fetch invoices.');
     }
 }
-
-// FOLLOWED USELESS TUTORIAL THIS WASN'T EVEN NEEDED
-// export async function getAllIds() {
-//   try {
-//     const queryMongoose = DocInformation.find().select("_id");
-
-//     const result = await queryMongoose.exec();
-
-//     const thing = result.map((element) => (
-//         {
-//           params: {
-//             id: element._id.toString()
-//           }
-//         }
-//     ));
-
-//     return thing;
-
-// } catch (error: any) {
-//   console.log("Database error", error);
-//   throw new Error('Failed to fetch invoices.');
-// }
-// }

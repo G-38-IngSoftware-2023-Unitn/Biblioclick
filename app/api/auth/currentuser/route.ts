@@ -2,6 +2,7 @@ import { connectDB } from "@/configs/dbConfig";
 import { validateJWT } from "@/app/helpers/validateJWT";
 import { NextRequest, NextResponse } from "@/node_modules/next/server";
 import User from "@/app/models/userModel";
+import { TokenExpiredError } from "jsonwebtoken";
 connectDB();
 
 
@@ -18,11 +19,15 @@ export async function GET(request: NextRequest) {
         data: user,
       });
     } catch (error: any) {
-      return NextResponse.json(
-        {
-          message: error.message,
-  }, {
-          status: 400,
-        }
-  ); }
+      console.log(error.type);
+      const response = NextResponse.json({
+        message: error.message,
+      }, {
+        status: 400,
+      });
+      response.cookies.delete("token");
+      response.cookies.set("isLoggedIn", "false");
+      
+    return response;
+  }
 }
