@@ -41,8 +41,7 @@ export default function AccountLayout({
     
   <main className='flex'>
     <Menu style={{ width: 256 }} items={items}/>
-    
-    <span className='p-4'>{children}</span>
-    </main>
+    <span className='p-4 grow'>{children}</span>
+  </main>
   )
 }

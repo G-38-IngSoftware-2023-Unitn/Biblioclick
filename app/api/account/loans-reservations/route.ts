@@ -1,11 +1,10 @@
 import { connectDB } from "@/configs/dbConfig";
 import { validateJWT } from "@/app/helpers/validateJWT";
 import { NextRequest, NextResponse } from "@/node_modules/next/server";
-import User from "@/app/models/userModel";
-import { TokenExpiredError } from "jsonwebtoken";
 import mongoose from "mongoose";
 import Reservations from "@/app/models/reservationModel";
 import Loans from "@/app/models/loansModel";
+import DocCopies from "@/app/models/documentCopiesModel";
 
 connectDB();
 
@@ -13,23 +12,40 @@ export async function GET(request: NextRequest) {
     try {
         const userId = await validateJWT(request);
 
-        const query1 = Reservations.find({userId: userId})
-        .populate("documentCopyId", "-createdAt -updatedAt -__v")
-        .select("-createdAt -updatedAt -__v");
+        const reservations = await Reservations.find({userId: userId})
+        .select("-createdAt -updatedAt -__v").exec();
 
-        const query2 = Loans.find({userId: userId})
-        .populate("documentCopyId", "-createdAt -updatedAt -__v")
-        .select("-createdAt -updatedAt -__v");
+        const loans = await Loans.find({userId: userId})
+        .select("-createdAt -updatedAt -__v").exec();
 
-        const res1 = await query1.exec();
-        const res2 = await query2.exec();
+        const mergedValues = Object.values({...reservations, ...loans});
 
-        const resMerged = {...res1, ...res2};
-        console.log("merged", Object.values(resMerged));
+        const returnResult = await Promise.all(mergedValues.map(async (element) => {
+            const documentInfo = await DocCopies.findById(element?.documentCopyId)
+            .populate("documentId", "-createdAt -updatedAt -__v -description -genre -ISBN")
+            .select("-createdAt -updatedAt -__v").exec();
+
+            const documentId = documentInfo?.documentId?._id;
+
+            const docInf = documentInfo?.documentId.toObject();
+            delete docInf._id;
+
+            const docInfo = {
+                documentId: documentId,
+                ...docInf
+            }
+
+            const docCopy = documentInfo.toObject();
+            delete docCopy?.documentId;
+            delete docCopy?._id;
+
+            return {...element.toObject(),...docCopy, ...docInfo};
+        }));
 
         return NextResponse.json({
-            data: resMerged,
+            data: returnResult,
         });
+
     } catch (error: any) {
         const response = NextResponse.json({
             message: error.message,

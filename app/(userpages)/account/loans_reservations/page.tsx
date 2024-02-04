@@ -9,12 +9,12 @@ import { ReactElement, useEffect, useState } from "react";
 
 interface resultType {
     _id: ObjectId;
-    documentCopyId: string;
+    documentCopyId: Object;
     userId: string;
     startDate: Date;
 }
 
-function LoansReservation() {
+export default function LoansReservation() {
 
     const router = useRouter();
 
@@ -22,10 +22,8 @@ function LoansReservation() {
 
     async function fetchUserData() {
         try {
-            console.log("hello");
             await axios.get("/api/account/loans-reservations").then((response) => {
-                console.log("obj values", Object.values(response.data.data))
-                setUserData(Object.values(response.data.data));
+                setUserData(response.data.data);
             });
         } catch (error: any) {
             router.refresh();
@@ -35,7 +33,6 @@ function LoansReservation() {
 
     useEffect(() => {
         fetchUserData();
-        console.log("userdata", userData);
     }, []);
 
     return (
@@ -44,4 +41,3 @@ function LoansReservation() {
         </div>
     )
 }
-export default LoansReservation

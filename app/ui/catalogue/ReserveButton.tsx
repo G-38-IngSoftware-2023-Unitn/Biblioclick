@@ -11,7 +11,6 @@ export default function ReserveButton(props: any) {
 
     const onReservation = () => {
         try{
-            console.log(props?.docId);
             axios.post("/api/documentDB/reserve-document", {documentId: props?.docId}).then((response) => {
                 message.success(response.data.message);
             });
