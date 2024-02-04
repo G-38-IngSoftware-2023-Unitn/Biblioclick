@@ -1,9 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export const documentCopySchema = new mongoose.Schema(
     {
         documentId: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "documents",
             required: true,
         },
         reservationStatus: {

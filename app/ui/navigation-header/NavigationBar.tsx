@@ -49,7 +49,6 @@ export default function NavigationBar() {
 
   useEffect(() => {
     const split = pathname?.split("/")[1];
-    console.log(split);
 
     if(split === "") {
       setCurrent("home");

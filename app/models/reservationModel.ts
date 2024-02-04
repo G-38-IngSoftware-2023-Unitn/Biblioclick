@@ -1,20 +1,21 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export const reservationSchema = new mongoose.Schema(
     {
         documentCopyId: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "documentCopies",
             required: true,
         },
         userId:{
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "users",
             required: true,
         },
         startDate: {
             type: Date,
             required: true,
         },
-        
     },
     {
         timestamps: true,

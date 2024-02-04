@@ -19,7 +19,6 @@ export async function GET(request: NextRequest) {
         data: user,
       });
     } catch (error: any) {
-      console.log(error.type);
       const response = NextResponse.json({
         message: error.message,
       }, {

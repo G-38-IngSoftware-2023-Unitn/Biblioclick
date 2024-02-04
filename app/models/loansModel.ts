@@ -1,13 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export const loanSchema = new mongoose.Schema(
     {
         documentCopyId: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "documentCopies",
             required: true,
         },
         userId:{
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "users",
             required: true,
         },
         startDate: {

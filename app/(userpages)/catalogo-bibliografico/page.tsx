@@ -1,7 +1,7 @@
 import { fetchDocumentsAmount } from "@/app/api/serverside/data-fetching";
-import PaginationURL from "@/app/ui/homepage/catalogue/PaginationURL";
-import SearchURLInput from "@/app/ui/homepage/catalogue/SearchURL";
-import TableSearchCatalogue from "@/app/ui/homepage/catalogue/TableSearch";
+import PaginationURL from "@/app/ui/catalogue/PaginationURL";
+import SearchURLInput from "@/app/ui/catalogue/SearchURL";
+import TableSearchCatalogue from "@/app/ui/catalogue/TableSearch";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Suspense } from "react";
 

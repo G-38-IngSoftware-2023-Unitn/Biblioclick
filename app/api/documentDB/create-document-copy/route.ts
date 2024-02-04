@@ -2,6 +2,7 @@ import { connectDB } from "@/configs/dbConfig";
 import DocInformation from "@/app/models/documentModel";
 import { NextRequest, NextResponse } from 'next/server';
 import DocCopy from "@/app/models/documentCopiesModel";
+import mongoose, { Schema } from "mongoose";
 
 interface documentCopy {
     documentId: string,
@@ -15,7 +16,6 @@ connectDB();
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
-        console.log(reqBody);
 
         //check if the document already exists
         const docExists = await DocInformation.findById(reqBody.documentId);
@@ -25,13 +25,11 @@ export async function POST(request: NextRequest) {
 
         // create new user
         const newDoc = new DocCopy({
-            documentId: reqBody.documentId,
+            documentId: docExists._id,
             reservationStatus: false,
             loanStatus: false,
             isLoanable: true,
         });
-
-        console.log(newDoc);
 
         await newDoc.save();
 

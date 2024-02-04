@@ -22,9 +22,9 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
         </div>
     )
     const [loading, setLoading] = React.useState(false);
-    console.log('Before useRouter');
+    //console.log('Before useRouter');
     const router = useRouter();
-    console.log('After useRouter', router);
+    //console.log('After useRouter', router);
     const onLogout = async () => {
         try {
           setLoading(true);

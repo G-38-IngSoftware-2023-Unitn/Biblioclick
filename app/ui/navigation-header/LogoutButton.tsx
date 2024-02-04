@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 
 export default function LogoutButton () {
 
-    console.log('Before useRouter');
+    //console.log('Before useRouter');
     const router = useRouter();
-    console.log('After useRouter', router);
+    //console.log('After useRouter', router);
 
     const onLogout = async () => {
         try {

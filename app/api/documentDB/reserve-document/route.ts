@@ -4,6 +4,7 @@ import DocCopy from "@/app/models/documentCopiesModel";
 import { NextRequest, NextResponse } from 'next/server';
 import { validateJWT } from "@/app/helpers/validateJWT";
 import Reservation from "@/app/models/reservationModel";
+import mongoose from "mongoose";
 
 
 connectDB();
@@ -14,8 +15,10 @@ export async function POST(request: NextRequest) {
         const userId = await validateJWT(request);
         const reqBody = await request.json();
 
+        console.log("reqbody", reqBody);
+
         const availableCopy = await DocCopy.findOne(
-            {documentId: reqBody?.documentId,
+            {documentId: new mongoose.Types.ObjectId(reqBody?.documentId),
             loanStatus: false,
             reservationStatus: false,
             isLoanable: true}).exec();

@@ -1,13 +1,13 @@
 import { connectDB } from "@/configs/dbConfig";
 import DocInformation from "@/app/models/documentModel";
 import DocCopy from "@/app/models/documentCopiesModel";
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import { aggregateFieldEqual } from "firebase/firestore";
 
 connectDB();
 
 interface documentCopy {
-  documentId: string,
+  documentId: ObjectId,
   reservationStatus: boolean,
   loanStatus: boolean,
   isLoanable: boolean,
@@ -19,12 +19,13 @@ export async function fetchDocumentsSimple(query: string, currentPage: number, i
         {score: {$meta: 'textScore'}})
         .sort({ score: { $meta: 'textScore'}})
         .skip(ippg * (currentPage - 1))
-        .limit(ippg);
+        .limit(ippg)
+        .select("-createdAt -updatedAt -__v");
         
       const result = await queryMongoose.exec();
       if(result.length == 0) return;
 
-      const resultIds = result.map((document) => {return document.id});
+      const resultIds = result.map((document) => {return document._id});
 
       const aggr = await DocCopy.aggregate([
         {
@@ -66,8 +67,9 @@ export async function fetchDocumentsSimple(query: string, currentPage: number, i
       ]);
 
       const returnValue = result.map((document) => {
-        const second = aggr.find((docCopy) => docCopy._id === document.id);
+        const second = aggr.find((docCopy) => (docCopy._id?.toString() == document._id?.toString()));
         delete second._id;
+        // console.log({...document.toObject(), ...second});
         return {...document.toObject(), ...second};
       });
 
@@ -81,12 +83,12 @@ export async function fetchDocumentsSimple(query: string, currentPage: number, i
 
 export async function fetchDocumentById(id: string) {
   try {
-    const query = DocInformation.findById(id).select("-_id -createdAt -updatedAt -__v");
+    const query = DocInformation.findById(id).select("-createdAt -updatedAt -__v");
     const document = await query.exec();
 
     const aggr = await DocCopy.aggregate([
       {
-        $match: {documentId: id}
+        $match: {documentId: document._id}
       },
       {
         $group: {

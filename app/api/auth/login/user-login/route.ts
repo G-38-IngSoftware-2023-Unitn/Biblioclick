@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
         // create token
         const token = jwt.sign({ id: user._id }, process.env.jwt_secret!, {
             //if remember isn't checked, the token will works for only 30m
-            expiresIn: (reqBody.remember === "checked") ? "7d" : "30m",
+            expiresIn: (reqBody.remember === true) ? "7d" : "30m",
         });
 
         const response = NextResponse.json({
