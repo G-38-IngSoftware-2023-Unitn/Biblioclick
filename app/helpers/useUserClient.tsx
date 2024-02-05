@@ -7,7 +7,7 @@ export default function useUserClient() {
     const [token, setToken] = useState<boolean>();
     useEffect(() => {
         setToken(Cookies.get('isLoggedIn')==="true" ? true : false);
-    });
+    }, []);
 
     return token;
     

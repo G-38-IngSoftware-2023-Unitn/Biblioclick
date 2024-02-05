@@ -13,6 +13,8 @@ export async function GET(request: NextRequest) {
     try {
         const userId = await validateJWT(request);
 
+        const bugFix = await documentModel.findOne({}).exec();
+
         const reservations = await Reservations.find({userId: userId})
         .select("-createdAt -updatedAt -__v").exec();
 

@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 
 ## Node.js packages to install
-npm i antd axios redux react-redux @reduxjs/toolkit mongoose bcryptjs jsonwebtoken firebase js-cookie @types/js-cookie @ant-design/icons
+npm i antd axios redux react-redux @reduxjs/toolkit mongoose bcryptjs jsonwebtoken firebase js-cookie @types/js-cookie @ant-design/icons jest jest-environment-jsdom @testing-library/react @testing-library/jest-dom
 
 ## Getting Started
 

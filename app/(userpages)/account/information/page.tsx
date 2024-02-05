@@ -26,6 +26,17 @@ function AccountInformation() {
 
     const router = useRouter();
 
+    const onModify = async (values: userType) => {
+        try {
+            //console.log(values);
+            await axios.post("/api/account/information/modify", values);
+            router.push("/account");
+            location.reload();
+        } catch (error: any) {
+            message.error(error.response.data.message);
+        }
+    }
+
     useEffect(() => {
         if (userData) {
             setDataComponent(
@@ -61,16 +72,7 @@ function AccountInformation() {
         fetchUserData();
     }, [])
 
-    const onModify = async (values: userType) => {
-        try {
-            //console.log(values);
-            await axios.post("/api/account/information/modify", values);
-            router.push("/account");
-            location.reload();
-        } catch (error: any) {
-            message.error(error.response.data.message);
-        }
-    }
+    
 
     return (
         <div>{dataComponent}</div>

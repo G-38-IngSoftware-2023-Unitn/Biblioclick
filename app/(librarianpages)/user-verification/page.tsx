@@ -23,7 +23,7 @@ interface userType {
     isActive: boolean;
 }
 
-export default function userVerification() {
+export default function UserVerification() {
 
     const [userData, setUserData] = useState<userType>();
 

@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
             throw new Error("Not logged in as librarian");
         }
 
+        const bugFix = await documentModel.findOne({}).exec();
+
         const loans = await Loans.find({})
         .select("-createdAt -updatedAt -__v").exec();
 

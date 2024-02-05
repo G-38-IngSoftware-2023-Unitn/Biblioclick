@@ -15,7 +15,7 @@ export default function LogoutButton () {
         try {
             await axios.get("/api/auth/logout");
             message.success("Logout successful");
-            router.refresh();
+            location.reload();
         } catch (error: any) {
             message.error(error.response?.data.message);
         }
