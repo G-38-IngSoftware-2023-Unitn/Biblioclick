@@ -16,7 +16,7 @@ function Register() {
     const router = useRouter();
     const onRegister = async (values: librarian) => {
         try {
-            await axios.post("api/auth/login/librarian-login", values);
+            await axios.post("api/librarian/create-librarian", values);
             message.success("Registration successful, please login to continue");
             router.push("/auth/login");
         } catch (error: any) {

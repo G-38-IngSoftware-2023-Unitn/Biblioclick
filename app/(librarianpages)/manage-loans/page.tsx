@@ -28,7 +28,7 @@ export default function LoansReservation() {
                 setUserData(response.data.data);
             });
         } catch (error: any) {
-            router.refresh();
+            location.reload();
             message.error(error.response.data.message);
         }
     }

@@ -52,7 +52,7 @@ function AccountInformation() {
             });
         } catch (error: any) {
             console.log("it's here");
-            router.refresh();
+            location.reload();
             message.error(error.response.data.message);
         }
     }
@@ -66,7 +66,7 @@ function AccountInformation() {
             //console.log(values);
             await axios.post("/api/account/information/modify", values);
             router.push("/account");
-            router.refresh();
+            location.reload();
         } catch (error: any) {
             message.error(error.response.data.message);
         }

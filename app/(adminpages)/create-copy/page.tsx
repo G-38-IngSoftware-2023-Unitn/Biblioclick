@@ -20,7 +20,7 @@ function AddDocument() {
     try {
         await axios.post("/api/documentDB/create-document-copy", values);
         message.success("Succesfully added new document");
-        router.refresh();
+        location.reload();
     } catch (error: any) {
         message.error(error.response.data.message);
     }
