@@ -10,7 +10,7 @@ export function middleware(request:NextRequest) {
     }
     
     const librarianPages = ["/add-document", "/create-copy", "/create-librarian-account",
-    "/user-verification"];
+    "/user-verification", "/manage-loans", "/manage-reservations"];
 
     if (librarianPages.includes(request.nextUrl.pathname)) {
         isLibrarianRoute = true;
@@ -18,7 +18,7 @@ export function middleware(request:NextRequest) {
     // if the token is not present and the route is not public, redirect to login
     const token = request.cookies.get("token")?.value || "";
     const loggedIn = (request.cookies.get("isLoggedIn")?.value == "true") ? true : false;
-    const librarianLoggedIn = (request.cookies.get("librarianLoggedIn")?.value == "true") ? true : false;
+    const librarianLoggedIn = request.cookies.get("librarianToken")?.value || "";
     const isLoggedIn = token && loggedIn;
 
     if ((!loggedIn && !isPublicRoute) || (!librarianLoggedIn && isLibrarianRoute)){
@@ -40,5 +40,5 @@ export function middleware(request:NextRequest) {
 //public pages
 export const config = {
     matcher: ["/auth/:path*", "/account/:path*", "/add-document", "/create-copy", "/create-librarian-account",
-            "/user-verification"],
+            "/user-verification", "/manage-loans", "/manage-reservations",],
 };

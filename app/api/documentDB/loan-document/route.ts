@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
             throw new MongooseError("Failed to fetch reservation");
         }
 
-        const loanExists = await Loans.find({documentCopyId: reserv.documentCopyId}).exec();
+        const loanExists = await Loans.findOne({documentCopyId: reserv.documentCopyId});
         if (loanExists) {
             throw new MongooseError("Loan already present");
         }
@@ -30,7 +30,6 @@ export async function POST(request: NextRequest) {
         });
 
         await loan.save();
-
 
         const docCopy = await DocCopies.findById(reserv?.documentCopyId).exec();
         docCopy.reservationStatus = false;

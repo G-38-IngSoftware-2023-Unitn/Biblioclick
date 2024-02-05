@@ -18,27 +18,15 @@ interface documentType {
     loanable: number,
 }
 
-export default function ReservationElement(props: any) {
+export default function LoanElement(props: any) {
 
     const doc = props?.doc;
 
     const router = useRouter();
 
-    const onCancel = async () => {
+    const endLoan = async () => {
         try{
-            axios.post("/api/documentDB/cancel-reservation", {reservationId: doc?._id}).then((response) => {
-                message.success(response.data.message);
-            });
-            location.reload();
-        }
-        catch (error: any) {
-            message.error(error.response.data.message);
-        }
-    }
-
-    const onLoan = async () => {
-        try{
-            axios.post("/api/documentDB/loan-document", {reservationId: doc?._id}).then((response) => {
+            axios.post("/api/documentDB/end-loan", {loanId: doc?._id}).then((response) => {
                 message.success(response.data.message);
             });
             location.reload();
@@ -50,7 +38,7 @@ export default function ReservationElement(props: any) {
 
     const MILLISECONDSPERDAY = 24*60*60*1000;
 
-    const RESERVATIONDURATION = 7;
+    const LOANDURATION = 30;
 
     const timeElapsed = Math.round((Date.now() - +(new Date(doc?.startDate)))/MILLISECONDSPERDAY);
 
@@ -72,25 +60,16 @@ export default function ReservationElement(props: any) {
                 <p className="font-semibold text-base mb-0.5 mt-2.5">User Id: {doc?.userId}</p>
             </div>
             <div className="mr-4 mt-1 flex flex-col gap-2">
-                <p className="text-slate-400 text-xs m-0">Reservation</p>
-                <p className="text-slate-400 text-xs m-0">Days left: {(RESERVATIONDURATION - timeElapsed)}</p>
+                <p className="text-slate-400 text-xs m-0">Loan</p>
+                <p className="text-slate-400 text-xs m-0">Days left: {(LOANDURATION - timeElapsed)}</p>
                 <Popconfirm
-                    title="Cancel reservation"
-                    description="Are you sure to cancel the reservation?"
-                    onConfirm={onCancel}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <Button danger>Cancel reservation</Button>
-                </Popconfirm>
-                <Popconfirm
-                    title="Confirm loan"
+                    title="End loan"
                     description="Document will be signed as loaned"
-                    onConfirm={onLoan}
+                    onConfirm={endLoan}
                     okText="Yes"
                     cancelText="No"
                 >
-                    <Button>Confirm Loan</Button>
+                    <Button>End loan</Button>
                 </Popconfirm>
                 <Button href={"/catalogo-bibliografico/" + doc.documentId}>
                     Go to document page

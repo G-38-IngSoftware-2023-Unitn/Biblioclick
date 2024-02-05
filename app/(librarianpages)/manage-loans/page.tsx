@@ -1,4 +1,6 @@
 "use client"
+import LoanReservationElement from "@/app/ui/account/loan-reservationElement";
+import LoanReservationTable from "@/app/ui/account/loan-reservationTable";
 import LoanElement from "@/app/ui/librarian/loansElement";
 import ReservationElement from "@/app/ui/librarian/reservationsElement";
 import { message } from "antd";
@@ -22,7 +24,7 @@ export default function LoansReservation() {
 
     async function fetchUserData() {
         try {
-            await axios.get("/api/librarian/fetch-reservations").then((response) => {
+            await axios.get("/api/librarian/fetch-loans").then((response) => {
                 setUserData(response.data.data);
             });
         } catch (error: any) {
@@ -37,11 +39,11 @@ export default function LoansReservation() {
 
     return (
         <main>
-            <p> All reservations </p>
+            <p> All loans </p>
             <div>
                 <Suspense>
                     {userData?.map((element: resultType) => (
-                        <ReservationElement key={element?._id.toString()} doc={element}/>
+                        <LoanElement key={element?._id.toString()} doc={element}/>
                     ))}
                 </Suspense>
             </div>
