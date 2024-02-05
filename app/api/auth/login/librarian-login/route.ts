@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
         const reqBody = await request.json();
 
         // check if user exists in database or not
-        const librarian = await Librarian.findOne({ email: reqBody.email });
+        const librarian = await Librarian.findOne({ username: reqBody.username });
         if (!librarian) {
             throw new Error("User does not exist");
         }
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
         const response = NextResponse.json({
             message: "Login successful",
         });
-        response.cookies.set("token", token, {
+        response.cookies.set("librarianToken", token, {
             httpOnly: true,
             path: "/",
         });

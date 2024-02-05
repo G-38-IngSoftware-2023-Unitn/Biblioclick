@@ -1,27 +1,24 @@
 import { connectDB } from "@/configs/dbConfig";
-import { validateJWT } from "@/app/helpers/validateJWT";
 import { NextRequest, NextResponse } from "@/node_modules/next/server";
-import mongoose from "mongoose";
 import Reservations from "@/app/models/reservationModel";
-import Loans from "@/app/models/loansModel";
 import DocCopies from "@/app/models/documentCopiesModel";
 import documentModel from "@/app/models/documentModel";
+import mongoose from "mongoose";
 
 connectDB();
 
 export async function GET(request: NextRequest) {
     try {
-        const userId = await validateJWT(request);
+        if (!request.cookies.get("librarianToken")) {
+            throw new Error("Not logged in as librarian");
+        }
 
-        const reservations = await Reservations.find({userId: userId})
+        const reservations = await Reservations.find({})
         .select("-createdAt -updatedAt -__v").exec();
 
-        const loans = await Loans.find({userId: userId})
-        .select("-createdAt -updatedAt -__v").exec();
+        const reserv = Object.values(reservations);
 
-        const mergedValues = [...reservations, ...loans];
-
-        const returnResult = await Promise.all(mergedValues.map(async (element) => {
+        const returnResult = await Promise.all(reserv.map(async (element) => {
             const documentInfo = await DocCopies.findById(element?.documentCopyId)
             .populate("documentId", "-createdAt -updatedAt -__v -description -genre -ISBN")
             .select("-createdAt -updatedAt -__v").exec();
@@ -55,10 +52,6 @@ export async function GET(request: NextRequest) {
         });
 
         //if not a database error assume it's a token error
-        if (!(error instanceof mongoose.Error)){
-            response.cookies.delete("token");
-            response.cookies.set("isLoggedIn", "false");
-        }
 
     return response;
   }

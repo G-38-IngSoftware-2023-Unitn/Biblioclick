@@ -27,8 +27,14 @@ export async function POST(request: NextRequest) {
             expiresIn: (reqBody.remember === true) ? "7d" : "30m",
         });
 
+        let isLibrarian = false;
+
+        if (request.cookies.get("librarianToken")) {
+            isLibrarian = true;
+        }
+
         const response = NextResponse.json({
-            message: "Login successful",
+            message: (isLibrarian) ? "Login successful" : "Removed librarian access, login successful",
         });
         response.cookies.set("token", token, {
             httpOnly: true,
@@ -38,6 +44,7 @@ export async function POST(request: NextRequest) {
             httpOnly: false,
             path: "/",
         });
+        response.cookies.delete("librarianToken");
 
         return response;
     } catch (error: any) {

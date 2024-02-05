@@ -1,5 +1,4 @@
 import { connectDB } from "@/configs/dbConfig";
-import User from "@/app/models/userModel";
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from "bcryptjs";
 import Librarian from "@/app/models/librarianModel";
@@ -12,7 +11,7 @@ export async function POST(request: NextRequest) {
         const reqBody = await request.json();
 
         //check if the user already exists
-        const userExists = await User.findOne({ email: reqBody.email });
+        const userExists = await Librarian.findOne({ username: reqBody.username });
         if (userExists) {
             throw new Error("User already exists");
         }
@@ -21,12 +20,12 @@ export async function POST(request: NextRequest) {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(reqBody.password, salt);
         reqBody.password = hashedPassword;
-        const newUser = new User(reqBody);
+        const newUser = new Librarian(reqBody);
 
         await newUser.save();
 
         return NextResponse.json({
-            message: "User created successfully",
+            message: "Librarian created successfully",
             data: newUser,
         })
 

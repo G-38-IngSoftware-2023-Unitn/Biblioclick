@@ -34,8 +34,8 @@ function LibrarianLogin() {
 
     return (
             <Form className='w-[500px] gap-5 items-center' layout='vertical' onFinish={onLogin}>
-                <Form.Item name="email" label="Email" rules={getAntdFieldRequiredRule("Please input your email!")}>
-                    <input type="email" />
+                <Form.Item name="username" label="Librarian username" rules={getAntdFieldRequiredRule("Please input your username!")}>
+                    <input type="text" />
                 </Form.Item>
 
                 <Form.Item name="password" label="Password" rules={getAntdFieldRequiredRule("Please input your password!")}>
