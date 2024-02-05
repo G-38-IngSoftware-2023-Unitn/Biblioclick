@@ -23,7 +23,7 @@ function AddDocument() {
     try {
         await axios.post("/api/documentDB/add-document", values);
         message.success("Succesfully added new document");
-        router.push("/");
+        location.reload();
     } catch (error: any) {
         message.error(error.response.data.message);
     }
