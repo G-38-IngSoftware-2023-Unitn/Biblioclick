@@ -11,11 +11,6 @@ export const getApiDocs = async () => {
       },
       components: {
         securitySchemes: {
-          BearerAuth: {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
-          },
           UserTokenAuth: {
             type: 'apiKey',
             in: 'cookie',

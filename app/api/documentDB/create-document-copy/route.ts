@@ -13,6 +13,33 @@ interface documentCopy {
 
 connectDB();
 
+/**
+ * @swagger
+ *  /api/documentDB/create-document-copy:
+ *      post:
+ *          security:
+ *              - LibrarianTokenAuth: []
+ *          tags:
+ *              - documentDB
+ *          summary: Creates copy of document
+ *          description:  If logged in as admin, creates copy of provided document
+ *          requestBody:
+ *              description: Document Id
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              documentId:
+ *                                  type: string
+ *          responses:
+ *              200:
+ *                  description: Successfully added new document copy
+ *              400:
+ *                  description: Token not provided, document not available, or failed operation
+ */
+
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();

@@ -8,6 +8,33 @@ import DocCopies from "@/app/models/documentCopiesModel";
 
 connectDB();
 
+/**
+ * @swagger
+ *  /api/documentDB/end-loan:
+ *      post:
+ *          security:
+ *              - LibrarianTokenAuth: []
+ *          tags:
+ *              - documentDB
+ *          summary: Ends loan
+ *          description: If logged in as a librarian, ends reservation based on loanId
+ *          requestBody:
+ *              description: Document Id
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              loanId:
+ *                                  type: string
+ *          responses:
+ *              200:
+ *                  description: Successfully cancelled reservation
+ *              400:
+ *                  description: Token not provided, loan not available, or failed operation
+ */
+
 export async function POST(request: NextRequest) {
     try {
 

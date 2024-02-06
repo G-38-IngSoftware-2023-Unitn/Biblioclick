@@ -54,9 +54,9 @@ interface userType {
  *                                  format: date-time
  *          responses:
  *              200:
- *                  description: Succesful registration
+ *                  description: Successful operation
  *              400:
- *                  description: User already exists, or failed registration
+ *                  description: User doesn't exist
  */
 
 export async function POST(request: NextRequest) {

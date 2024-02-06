@@ -5,6 +5,48 @@ import { ObjectId } from "mongoose";
 
 connectDB();
 
+/**
+ * @swagger
+ *  /api/user-verification/verify-user:
+ *      post:
+ *          security:
+ *              - LibrarianTokenAuth: []
+ *          tags:
+ *              - user-verification
+ *          summary: Modify user information
+ *          description: Modifies user information based on provided input, if librarian login token is present
+ *          requestBody:
+ *              description: User information
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          required:
+ *                              - _id
+ *                          properties:
+ *                              _id:
+ *                                  type: string
+ *                              email:
+ *                                  type: string
+ *                              password: 
+ *                                  type: string
+ *                              name:
+ *                                  type: string
+ *                              surname:
+ *                                  type: string
+ *                              codiceFiscale:
+ *                                  type: string
+ *                              dateOfBirth:
+ *                                  type: string
+ *                                  format: date-time
+ *          responses:
+ *              200:
+ *                  description: Successfully verified user
+ *              400:
+ *                  description: User doesn't exist
+ */
+
 interface userType {
     _id: ObjectId;
     name: string;

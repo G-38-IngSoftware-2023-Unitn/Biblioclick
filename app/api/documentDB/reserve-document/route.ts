@@ -9,6 +9,33 @@ import mongoose from "mongoose";
 
 connectDB();
 
+/**
+ * @swagger
+ *  /api/documentDB/reserve-document:
+ *      post:
+ *          security:
+ *              - UserTokenAuth: []
+ *          tags:
+ *              - documentDB
+ *          summary: Reserves document
+ *          description: If logged in as a user, creates new reservation and adds it to the database. Furthermore modifies documentCopy information
+ *          requestBody:
+ *              description: Document Id
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              documentId:
+ *                                  type: string
+ *          responses:
+ *              200:
+ *                  description: Successfully added new reservation
+ *              400:
+ *                  description: Token not provided, document not available, or failed operation
+ */
+
 export async function POST(request: NextRequest) {
     try {
         

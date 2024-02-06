@@ -2,8 +2,50 @@ import { connectDB } from "@/configs/dbConfig";
 import DocInformation from "@/app/models/documentModel";
 import { NextRequest, NextResponse } from 'next/server';
 
-
 connectDB();
+
+/**
+ * @swagger
+ *  /api/documentDB/add-document:
+ *      post:
+ *          security:
+ *              - LibrarianTokenAuth: []
+ *          tags:
+ *              - documentDB
+ *          summary: Add new document
+ *          description: If logged in as admin, creates new document and adds it to the database
+ *          requestBody:
+ *              description: Document information
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              ISBN:
+ *                                  type: integer
+ *                                  example: 8854180785
+ *                              documentId:
+ *                                  type: string
+ *                              title:
+ *                                  type: string
+ *                              author:
+ *                                  type: string
+ *                              publisher:
+ *                                  type: string
+ *                              genre:
+ *                                  type: string
+ *                              description:
+ *                                  type: string
+ *                              publication_date:
+ *                                  type: string
+ *                                  format: date-time
+ *          responses:
+ *              200:
+ *                  description: Successfully added new document
+ *              400:
+ *                  description: Document with same ISBN already exists, or failed operation
+ */
 
 export async function POST(request: NextRequest) {
     try {
