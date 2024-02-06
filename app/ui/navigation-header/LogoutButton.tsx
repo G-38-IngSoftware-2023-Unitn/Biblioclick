@@ -13,7 +13,7 @@ export default function LogoutButton () {
 
     const onLogout = async () => {
         try {
-            await axios.get("/api/auth/logout");
+            await axios.delete("/api/auth/logout");
             message.success("Logout successful");
             location.reload();
         } catch (error: any) {

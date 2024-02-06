@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({
             message: "Document added successfully",
-            data: newDoc,
         })
 
     } catch (error: any) {

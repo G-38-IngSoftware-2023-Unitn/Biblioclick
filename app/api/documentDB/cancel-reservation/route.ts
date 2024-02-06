@@ -20,6 +20,9 @@ export async function POST(request: NextRequest) {
         }
 
         const docCopy = await DocCopies.findById(reserv?.documentCopyId).exec();
+        if (!docCopy) {
+            throw new MongooseError("Failed to fetch document copy");
+        }
         docCopy.reservationStatus = false;
         docCopy.save();
 

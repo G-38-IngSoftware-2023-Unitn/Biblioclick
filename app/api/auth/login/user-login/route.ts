@@ -6,6 +6,38 @@ import jwt from "jsonwebtoken";
 
 connectDB();
 
+/**
+ * @swagger
+ *  /api/auth/login/user-login:
+ *      post:
+ *          tags:
+ *              - auth
+ *          summary: User Log In
+ *          description: Verifies user credentials and creates verification token to save to cookies
+ *          requestBody:
+ *              description: Credentials
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          required:
+ *                              - email
+ *                              - password
+ *                          type: object
+ *                          properties:
+ *                              email:
+ *                                  type: string
+ *                              password: 
+ *                                  type: string
+ *                              remember:
+ *                                  type: boolean
+ *          responses:
+ *              200:
+ *                  description: Succesful login
+ *              400:
+ *                  description: Failed login
+ */
+
+
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
@@ -27,14 +59,8 @@ export async function POST(request: NextRequest) {
             expiresIn: (reqBody.remember === true) ? "7d" : "30m",
         });
 
-        let isLibrarian = false;
-
-        if (request.cookies.get("librarianToken")) {
-            isLibrarian = true;
-        }
-
         const response = NextResponse.json({
-            message: (isLibrarian) ? "Login successful" : "Removed librarian access, login successful",
+            message: "Login successful"
         });
         response.cookies.set("token", token, {
             httpOnly: true,

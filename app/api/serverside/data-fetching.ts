@@ -2,7 +2,6 @@ import { connectDB } from "@/configs/dbConfig";
 import DocInformation from "@/app/models/documentModel";
 import DocCopy from "@/app/models/documentCopiesModel";
 import mongoose, { ObjectId } from "mongoose";
-import { aggregateFieldEqual } from "firebase/firestore";
 
 connectDB();
 

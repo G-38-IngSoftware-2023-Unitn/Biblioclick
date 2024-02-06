@@ -8,6 +8,58 @@ import mongoose from "mongoose";
 
 connectDB();
 
+/**
+ *  @swagger
+ *  /api/librarian/fetch-loans:
+ *    get:
+ *      security:
+ *          - LibrarianTokenAuth: []
+ *      tags:
+ *        - librarian
+ *      summary: Fetch all loans
+ *      description: Returns all loans saved on the database and their information, if librarian login token is present
+ *      responses:
+ *        200:
+ *          description: Succesfully returns an array of loans
+ *          content:
+ *            application/json:
+ *              schema:
+ *                  type: array
+ *                  items:
+ *                      type: object
+ *                      properties:
+ *                          _id:
+ *                              type: string
+ *                          documentCopyId:
+ *                              type: string
+ *                          userId:
+ *                              type: string
+ *                          startDate:
+ *                              type: string
+ *                              format: date-time
+ *                          reservationStatus:
+ *                              type: boolean
+ *                          loanStatus:
+ *                              type: boolean
+ *                          isLoanable:
+ *                              type: boolean
+ *                          documentId:
+ *                              type: string
+ *                          title:
+ *                              type: string
+ *                          author:
+ *                              type: string
+ *                          publisher:
+ *                              type: string
+ *                          publication_date:
+ *                              type: string
+ *                              format: date-time
+ *        400:
+ *          description: Database errors
+ *        
+ * 
+ */
+
 export async function GET(request: NextRequest) {
     try {
         if (!request.cookies.get("librarianToken")) {

@@ -6,6 +6,36 @@ import Librarian from "@/app/models/librarianModel";
 
 connectDB();
 
+/**
+ * @swagger
+ *  /api/auth/login/librarian-login:
+ *      post:
+ *          tags:
+ *              - auth
+ *          summary: Librarian Log In
+ *          description: Verifies librarian credentials and creates verification token to save to cookies
+ *          requestBody:
+ *              description: Credentials
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          required:
+ *                              - username
+ *                              - password
+ *                          properties:
+ *                              username:
+ *                                  type: string
+ *                              password: 
+ *                                  type: string
+ *          responses:
+ *              200:
+ *                  description: Succesful login
+ *              400:
+ *                  description: Failed login
+ */
+
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
@@ -23,7 +53,7 @@ export async function POST(request: NextRequest) {
 
         // create token
         const token = jwt.sign({ id: librarian._id }, process.env.jwt_secret!, {
-            expiresIn: "24h",
+            expiresIn: "14h",
         });
 
         const response = NextResponse.json({

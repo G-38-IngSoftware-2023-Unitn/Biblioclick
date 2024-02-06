@@ -9,6 +9,58 @@ import documentModel from "@/app/models/documentModel";
 
 connectDB();
 
+/**
+ *  @swagger
+ *  /api/account/loans-reservations:
+ *    get:
+ *      security:
+ *          - UserTokenAuth: []
+ *      tags:
+ *        - account
+ *      summary: Gets loans and reservations of the current user
+ *      description: Returns the loans and reservations associated to the current user, obtained thanks to the jwt token saved in the cookies
+ *      responses:
+ *        200:
+ *          description: Succesfully returns an array of loans and reservations
+ *          content:
+ *            application/json:
+ *              schema:
+ *                  type: array
+ *                  items:
+ *                      type: object
+ *                      properties:
+ *                          _id:
+ *                              type: string
+ *                          documentCopyId:
+ *                              type: string
+ *                          userId:
+ *                              type: string
+ *                          startDate:
+ *                              type: string
+ *                              format: date-time
+ *                          reservationStatus:
+ *                              type: boolean
+ *                          loanStatus:
+ *                              type: boolean
+ *                          isLoanable:
+ *                              type: boolean
+ *                          documentId:
+ *                              type: string
+ *                          title:
+ *                              type: string
+ *                          author:
+ *                              type: string
+ *                          publisher:
+ *                              type: string
+ *                          publication_date:
+ *                              type: string
+ *                              format: date-time
+ *        400:
+ *          description: Token missing or user doesn't exist
+ *        
+ * 
+ */
+
 export async function GET(request: NextRequest) {
     try {
         const userId = await validateJWT(request);

@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         await findUser.save();
         
         return NextResponse.json({
-            data: findUser,
+            message: "User succesfully verified"
         });
     } catch (error: any) {
         return NextResponse.json({

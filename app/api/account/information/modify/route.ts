@@ -17,6 +17,48 @@ interface userType {
     isActive: boolean;
 }
 
+/**
+ * @swagger
+ *  /api/account/information/modify:
+ *      post:
+ *          security:
+ *              - UserTokenAuth: []
+ *          tags:
+ *              - account
+ *          summary: Modify user information
+ *          description: Modifies user information based on provided input
+ *          requestBody:
+ *              description: User information
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          required:
+ *                              - _id
+ *                          properties:
+ *                              _id:
+ *                                  type: string
+ *                              email:
+ *                                  type: string
+ *                              password: 
+ *                                  type: string
+ *                              name:
+ *                                  type: string
+ *                              surname:
+ *                                  type: string
+ *                              codiceFiscale:
+ *                                  type: string
+ *                              dateOfBirth:
+ *                                  type: string
+ *                                  format: date-time
+ *          responses:
+ *              200:
+ *                  description: Succesful registration
+ *              400:
+ *                  description: User already exists, or failed registration
+ */
+
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
@@ -35,7 +77,7 @@ export async function POST(request: NextRequest) {
         await findUser.save();
         
         return NextResponse.json({
-            data: findUser,
+            message: "user info modified successfully",
         });
     } catch (error: any) {
         return NextResponse.json({

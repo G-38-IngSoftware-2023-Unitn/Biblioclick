@@ -1,5 +1,23 @@
 import { NextResponse } from "@/node_modules/next/server";
-export async function GET(){
+
+/**
+ *  @swagger
+ *  /api/auth/logout:
+ *    delete:
+ *      tags:
+ *        - auth
+ *      summary: Logs out user
+ *      description: Logs out the user and deletes the cookies associated to them
+ *      responses:
+ *        200:
+ *          description: Logs out the user
+ *        400:
+ *          description: Signals any error
+ *        
+ * 
+ */
+
+export async function DELETE(){
 
     try{
 
