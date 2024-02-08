@@ -62,6 +62,9 @@ export async function GET(request: NextRequest) {
       const userId = await validateJWT(request);
       // retrieve the user without the password
       const user = await User.findById(userId).select("-password -__v -createdAt -updatedAt");
+      if(!user) {
+        throw new Error("user doesn't exist");
+      }
       return NextResponse.json({
         data: user,
       });
