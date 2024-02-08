@@ -8,7 +8,6 @@ import mongoose from 'mongoose';
 import User from "@/app/models/userModel";
 import { connectDB } from '@/configs/dbConfig';
 
-
 axios.defaults.baseURL = "http://localhost:3000";
 
 beforeAll(async () => {
@@ -17,7 +16,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
 
-    // delete all testing users (in this case used for mock registration)
+    // delete all testing users
     await User.deleteOne({email: "test1@gmail.com"}).exec();
 
     await mongoose.connection.close();
@@ -307,4 +306,4 @@ describe("'/api/auth/register' testing", () => {
         expect((res as any)._getJSONData()).toEqual({ message: 'User already exists' });
     });
 
-})
+});
