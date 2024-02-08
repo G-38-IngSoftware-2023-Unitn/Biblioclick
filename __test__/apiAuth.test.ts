@@ -11,21 +11,20 @@ import { connectDB } from '@/configs/dbConfig';
 
 axios.defaults.baseURL = "http://localhost:3000";
 
+beforeAll(async () => {
+    connectDB();
+});
 
-describe('first test', () => {
-
-    beforeAll(async () => {
-        connectDB();
-    });
-    
-    afterAll(async () => {
+afterAll(async () => {
 
     // delete all testing users (in this case used for mock registration)
     await User.deleteOne({email: "test1@gmail.com"}).exec();
 
     await mongoose.connection.close();
 
-    });
+});
+
+describe("'/api/auth/login/user-login' testing", () => {
 
     const userData = {
         _id:"65b459485cb533882222ef98",
@@ -39,14 +38,7 @@ describe('first test', () => {
         isActive:true
     }
 
-    const librarianCredentials = {
-        _id:"65c0dc780b55f3bdcbf9f234",
-        username:"admin1",
-        password:"HhM15wjBql9N!k!U",
-        "isAdmin":true,
-    }
-
-    it("'/auth/login/user-login' with correct credentials", async () => {
+    it("with correct credentials", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -62,7 +54,7 @@ describe('first test', () => {
         expect((res as any)._getJSONData()).toEqual({ message: 'Login successful' });
     });
 
-    it("'/auth/login/user-login' with incorrect password", async () => {
+    it("with incorrect password", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -78,7 +70,7 @@ describe('first test', () => {
         expect((res as any)._getJSONData()).toEqual({ message: 'Invalid credentials' });
     });
 
-    it("'/auth/login/user-login' with non existant user", async () => {
+    it("with non existant user", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -94,7 +86,23 @@ describe('first test', () => {
         expect((res as any)._getJSONData()).toEqual({ message: 'User does not exist' });
     });
 
-    it("'/auth/currentuser' with correct token", async () => {
+})
+
+describe("'/api/auth/currentuser' testing", () => {
+
+    const userData = {
+        _id:"65b459485cb533882222ef98",
+        name:"Giacomo",
+        surname:"Lanzo",
+        codiceFiscale:"fdffsddf466fdfsd",
+        dateOfBirth:"2004-03-24T00:00:00.000Z",
+        email:"mail@gmail.com",
+        isVerified:true,
+        password: "mail",
+        isActive:true
+    }
+
+    it("with correct token", async () => {
 
         const {req, res} = mockRequestResponse("GET");
 
@@ -118,7 +126,7 @@ describe('first test', () => {
         expect(resBody.isActive).toEqual(userData.isActive);
     });
 
-    it("'/auth/currentuser' with incorrect token", async () => {
+    it("with incorrect token", async () => {
 
         const {req, res} = mockRequestResponse("GET");
 
@@ -133,7 +141,7 @@ describe('first test', () => {
         expect((res as any)._getJSONData()).toEqual({message: "user doesn't exist"});
     });
 
-    it("'/auth/currentuser' with expired token", async () => {
+    it("with expired token", async () => {
 
         const {req, res} = mockRequestResponse("GET");
 
@@ -147,8 +155,11 @@ describe('first test', () => {
         expect(res.statusCode).toBe(400);
         expect((res as any)._getJSONData()).toEqual({message: 'jwt expired'});
     });
+})
 
-    it("'/auth/logout' test", async () => {
+describe("'/api/auth/logout' testing", () => {
+
+    it("success", async () => {
 
         const {req, res} = mockRequestResponse("DELETE");
         
@@ -158,8 +169,18 @@ describe('first test', () => {
         expect(res.statusCode).toBe(200);
         expect((res as any)._getJSONData()).toEqual({message: 'Logout successful'});
     });
+})
 
-    it("'/auth/login/librarian-login' with correct credentials", async () => {
+describe("'/api/auth/login/librarian-login' testing", () => {
+    const librarianCredentials = {
+        _id:"65c0dc780b55f3bdcbf9f234",
+        username:"admin1",
+        password:"HhM15wjBql9N!k!U",
+        "isAdmin":true,
+    }
+
+
+    it("with correct credentials", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -175,7 +196,7 @@ describe('first test', () => {
         expect((res as any)._getJSONData()).toEqual({ message: 'Login successful' });
     });
 
-    it("'/auth/login/librarian-login' with incorrect password", async () => {
+    it("with incorrect password", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -191,7 +212,7 @@ describe('first test', () => {
         expect((res as any)._getJSONData()).toEqual({ message: 'Invalid credentials' });
     });
 
-    it("'/auth/login/librarian-login' with non existant user", async () => {
+    it("with non existant user", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -206,8 +227,11 @@ describe('first test', () => {
         expect(res.statusCode).toBe(400);
         expect((res as any)._getJSONData()).toEqual({ message: 'User does not exist' });
     });
+})
 
-    it("'/auth/register' with new user", async () => {
+describe("'/api/auth/register' testing", () => {
+    
+    it("with new user", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -227,7 +251,7 @@ describe('first test', () => {
         expect((res as any)._getJSONData()).toEqual({ message: 'User created successfully' });
     });
 
-    it("'/auth/register' with duplicate key error", async () => {
+    it("with duplicate key error", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -247,7 +271,7 @@ describe('first test', () => {
         expect((res as any)._getJSONData()).toEqual({ message: 'E11000 duplicate key error collection: test.users index: codiceFiscale_1 dup key: { codiceFiscale: \"fdffsddf466fdfsd\" }' });
     });
 
-    it("'/auth/register' with incomplete information", async () => {
+    it("with incomplete information", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
@@ -264,8 +288,7 @@ describe('first test', () => {
             { message: 'users validation failed: dateOfBirth: Path `dateOfBirth` is required., codiceFiscale: Path `codiceFiscale` is required., surname: Path `surname` is required., name: Path `name` is required.' });
     });
     
-
-    it("'/auth/register' with existing user", async () => {
+    it("with existing user", async () => {
 
         const {req, res} = mockRequestResponse("POST");
 
