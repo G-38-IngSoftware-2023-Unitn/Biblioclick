@@ -69,7 +69,7 @@ beforeAll(async () => {
 afterAll(async () => {
 
     // delete all testing elements
-    await librarianModel.deleteOne({username: "librarian2"}).exec();
+    await librarianModel.deleteOne({username: newLibrarian.username}).exec();
 
     await loansModel.deleteMany({userId: userData._id}).exec();
 
@@ -115,17 +115,17 @@ describe("'/api/auth/register' testing", () => {
         req.url="/api/auth/register";
 
         req.body = {
-            name:"Marco",
-            surname:"Rossi",
-            codiceFiscale:"fdffsddf466fdfsd",
-            dateOfBirth:"2004-03-24T00:00:00.000Z",
-            email:"test3@gmail.com",
-            password: "mail",
+            name: userData.name,
+            surname: userData.surname,
+            codiceFiscale: userData.codiceFiscale,
+            dateOfBirth: userData.dateOfBirth,
+            email: "different mail",
+            password: userData.password,
         };
         
         await gatewaysHandler(req, res);
         expect(res.statusCode).toBe(400);
-        expect((res as any)._getJSONData()).toEqual({ message: 'E11000 duplicate key error collection: test.users index: codiceFiscale_1 dup key: { codiceFiscale: \"fdffsddf466fdfsd\" }' });
+        expect((res as any)._getJSONData()).toEqual({ message: `E11000 duplicate key error collection: test.users index: codiceFiscale_1 dup key: { codiceFiscale: \"${userData.codiceFiscale}\" }` });
     });
 
     it("with incomplete information", async () => {
