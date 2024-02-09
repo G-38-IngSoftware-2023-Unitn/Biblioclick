@@ -43,7 +43,6 @@ export default function UserVerificationCard(props: any) {
             <UserInputEdit value={props.userData?.codiceFiscale} type="codFisc" name="codiceFiscale" label="Codice Fiscale" />
             <UserInputEdit value={JSON.stringify(props.userData?.dateOfBirth).substring(1, 11)} name="dateOfBirth"
                 label="Date of Birth" type="date" />
-            <p> Created at: {JSON.stringify(props.userData?.createdAt)} </p>
             <p> Verified: {JSON.stringify(props.userData?.isVerified)} </p>
             <p> Active: {JSON.stringify(props.userData?.isActive)} </p>
             <Button type="primary" htmlType="submit" block className="text-black">

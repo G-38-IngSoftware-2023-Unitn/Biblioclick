@@ -19,6 +19,8 @@ export async function gatewaysHandler(
     const response: AxiosResponse = await axios(config);
     // Return JSON
     res.status(200).json(response.data);
+    // if(response.headers['set-cookie']) 
+    //   res.setHeader("set-cookie", response.headers['set-cookie']);
   } catch (err: any) {
     // Check if we got a useful response
     // console.log(err.response.data);

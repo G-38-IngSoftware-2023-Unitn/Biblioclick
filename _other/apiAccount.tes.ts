@@ -3,7 +3,7 @@
  */
 import axios from 'axios';
 import jwt from "jsonwebtoken";
-import { gatewaysHandler, mockRequestResponse } from './testingSupportFunctions';
+import { gatewaysHandler, mockRequestResponse } from '../__test__/testingSupportFunctions';
 import mongoose from 'mongoose';
 import User from "@/app/models/userModel";
 import { connectDB } from '@/configs/dbConfig';
