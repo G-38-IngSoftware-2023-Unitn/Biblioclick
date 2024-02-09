@@ -61,7 +61,7 @@ connectDB();
 
 export async function GET(request: NextRequest) {
     try {
-        if (!request.cookies.get("librarianToken")) {
+        if (!request.cookies.get("librarianToken")?.value) {
             throw new Error("Not logged in as librarian");
         }
 

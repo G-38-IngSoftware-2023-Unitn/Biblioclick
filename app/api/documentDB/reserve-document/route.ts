@@ -42,8 +42,6 @@ export async function POST(request: NextRequest) {
         const userId = await validateJWT(request);
         const reqBody = await request.json();
 
-        console.log("reqbody", reqBody);
-
         const availableCopy = await DocCopy.findOne(
             {documentId: new mongoose.Types.ObjectId(reqBody?.documentId),
             loanStatus: false,

@@ -11,6 +11,7 @@ import documentModel from '@/app/models/documentModel';
 import documentCopiesModel from '@/app/models/documentCopiesModel';
 import reservationModel from '@/app/models/reservationModel';
 import loansModel from '@/app/models/loansModel';
+import librarianModel from '@/app/models/librarianModel';
 
 axios.defaults.baseURL = "http://localhost:3000";
 
@@ -44,6 +45,12 @@ const librarianCredentials = {
     "isAdmin":true,
 }
 
+const newLibrarian = {
+    username:"librarian2",
+    password:"librarian",
+    "isAdmin":false,
+}
+
 const newDocument = {
     _id: '',
     title: 'Compleanno di sangue',
@@ -62,6 +69,8 @@ beforeAll(async () => {
 afterAll(async () => {
 
     // delete all testing elements
+    await librarianModel.deleteOne({username: "librarian2"}).exec();
+
     await loansModel.deleteMany({userId: userData._id}).exec();
 
     await reservationModel.deleteMany({userId: userData._id}).exec();
@@ -666,5 +675,176 @@ describe("'/api/documentDB/end-loan' testing", () => {
         expect((res as any)._getJSONData()).toEqual({ message: "Failed to fetch loan" });
     });
 
+
+});
+
+describe("'/api/account/loans-reservations' testing", () => {
+
+    it("with correct token", async () => {
+
+        const {req, res} = mockRequestResponse("GET");
+        
+        const token: string = jwt.sign({id: userData._id}, process.env.jwt_secret!);
+
+        req.url="/api/account/loans-reservations";
+
+        req.headers.cookie = `token=${token}`;
+
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ data: [] });
+    });
+
+    it("with expired token", async () => {
+
+        const {req, res} = mockRequestResponse("GET");
+        
+        const token: string = jwt.sign({id: userData._id}, process.env.jwt_secret!, {expiresIn: "-5"});
+
+        req.url="/api/account/loans-reservations";
+
+        req.headers.cookie = `token=${token}`;
+
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "jwt expired" });
+    });
+
+
+});
+
+describe("'/api/librarian/create-librarian' testing", () => {
+    
+    it("with new librarian", async () => {
+
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/librarian/create-librarian";
+
+        req.body = {
+            username: newLibrarian.username,
+            password: newLibrarian.password,
+        };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ message: 'Librarian created successfully' });
+    });
+    
+    it("with existing librarian", async () => {
+
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/librarian/create-librarian";
+
+        req.body = {
+            username: newLibrarian.username,
+            password: newLibrarian.password,
+        };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: 'User already exists' });
+    });
+
+});
+
+describe("'/api/librarian/fetch-reservations' testing", () => {
+
+    it("with librarian token", async () => {
+        const {req, res} = mockRequestResponse("GET");
+        
+        const token: string = jwt.sign({id: librarianCredentials._id}, process.env.jwt_secret!);
+
+        req.url="/api/librarian/fetch-reservations";
+
+        req.headers.cookie = `librarianToken=${token}`;
+
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ data: [
+            {
+              _id: '65c1425c782f42f62ae7b8ab',
+              documentCopyId: '65c11b523b04bfca8e63f8af',
+              userId: '65b459485cb533882222ef98',
+              startDate: '2024-02-05T20:17:32.596Z',
+              reservationStatus: true,
+              loanStatus: false,
+              isLoanable: true,
+              documentId: '65c11b3b3b04bfca8e63f8ac',
+              title: 'Iron flame',
+              author: 'Rebecca Yarros',
+              publication_date: '2024-01-01T00:00:00.000Z',
+              publisher: 'Sperling & Kupfer'
+            },
+            {
+              _id: '65c14260782f42f62ae7b8b8',
+              documentCopyId: '65bee11c09fa8b926cbbb1d1',
+              userId: '65b459485cb533882222ef98',
+              startDate: '2024-02-05T20:17:36.280Z',
+              reservationStatus: true,
+              loanStatus: false,
+              isLoanable: true,
+              documentId: '65b998430706773e6a3f31a3',
+              title: 'Le cronache di Narnia',
+              author: 'C.S. Lewis',
+              publication_date: '2008-09-14T00:00:00.000Z',
+              publisher: 'Mondadori'
+            },
+            {
+              _id: '65c14263782f42f62ae7b8c3',
+              documentCopyId: '65bee0e809fa8b926cbbb1c5',
+              userId: '65b459485cb533882222ef98',
+              startDate: '2024-02-05T20:17:39.404Z',
+              reservationStatus: true,
+              loanStatus: false,
+              isLoanable: true,
+              documentId: '65b997620706773e6a3f31a0',
+              title: 'I viaggi di Gulliver',
+              author: 'Jonathan Swift',
+              publication_date: '2014-06-04T00:00:00.000Z',
+              publisher: 'Feltrinelli'
+            }
+          ] });
+    });
+
+    it("without librarian token", async () => {
+        const {req, res} = mockRequestResponse("GET");
+
+        req.url="/api/librarian/fetch-reservations";
+
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "Not logged in as librarian" });
+    });
+
+});
+
+describe("'/api/librarian/fetch-loans' testing", () => {
+
+    it("with librarian token", async () => {
+        const {req, res} = mockRequestResponse("GET");
+        
+        const token: string = jwt.sign({id: librarianCredentials._id}, process.env.jwt_secret!);
+
+        req.url="/api/librarian/fetch-loans";
+
+        req.headers.cookie = `librarianToken=${token}`;
+
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        console.log((res as any)._getJSONData());
+        expect((res as any)._getJSONData()).toEqual({ data: [] });
+    });
+
+    it("without librarian token", async () => {
+        const {req, res} = mockRequestResponse("GET");
+
+        req.url="/api/librarian/fetch-loans";
+
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "Not logged in as librarian" });
+    });
 
 });
