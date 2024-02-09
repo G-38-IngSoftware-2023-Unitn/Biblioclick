@@ -7,6 +7,8 @@ import { gatewaysHandler, mockRequestResponse } from './testingSupportFunctions'
 import mongoose from 'mongoose';
 import User from "@/app/models/userModel";
 import { connectDB } from '@/configs/dbConfig';
+import documentModel from '@/app/models/documentModel';
+import documentCopiesModel from '@/app/models/documentCopiesModel';
 
 axios.defaults.baseURL = "http://localhost:3000";
 
@@ -40,6 +42,17 @@ const librarianCredentials = {
     "isAdmin":true,
 }
 
+const newDocument = {
+    _id: '',
+    title: 'Compleanno di sangue',
+    ISBN: 9788830461468,
+    author: 'James Patterson e Maxine Paetro',
+    publication_date: '2024-03-24T00:00:00.000Z',
+    genre: 'fiction',
+    description: "Sono le 17.30 di un anonimo lunedì quando una donna in preda al panico fa irruzione nell'ufficio di Cindy Thomas, giornalista investigativa del San Francisco Chronicle, supplicandola di indagare sulla scomparsa di sua figlia Tara e della nipotina Lorrie. La donna non ha alcun dubbio: accusa il marito della figlia, un uomo violento, non solo di averle fatte sparire ma addirittura di averle uccise. Ma non ha prove che possano dimostrarne la colpevolezza. La disperazione della donna convince Cindy a passare il caso all'amica Lindsay Boxer, sergente della polizia di San Francisco. Agli occhi di Lindsay, la vicenda appare in un primo momento come un tragico episodio di violenza domestica, e anche i suoi sospetti ricadono sul marito. Eppure, qualcosa non torna... L'uomo nega con ostinazione qualsiasi coinvolgimento, e racconta agli investigatori un'altra storia: sua moglie era una donna ribelle e inquieta, che in passato era scappata altre volte. Che si tratti anche adesso di una sparizione volontaria? Nella mente di Lindsay si insinua il dubbio che la vicenda sia ben più complessa, e il ritrovamento del corpo della piccola Lorrie non fa che accelerare gli eventi. Il caso assume dimensioni sempre più ampie e le donne del Club Omicidi dovranno unire le forze per districare un'inquietante ragnatela di bugie.",
+    publisher: 'Longanesi',
+}
+
 beforeAll(async () => {
     connectDB();
 });
@@ -47,6 +60,10 @@ beforeAll(async () => {
 afterAll(async () => {
 
     // delete all testing elements
+    await documentCopiesModel.deleteMany({documentId: newDocument._id}).exec();
+
+    await documentModel.deleteOne({_id: newDocument._id}).exec();
+
     await User.deleteOne({email: userData.email}).exec();
 
     //close DB connection
@@ -423,3 +440,101 @@ describe("'/api/account/information/modify' testing", () => {
 
 });
 
+describe("'/api/documentDB/add-document", () => {
+
+    it("with new document", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/add-document";
+
+        req.body = {
+            title: newDocument.title,
+            ISBN: newDocument.ISBN,
+            author: newDocument.author,
+            publication_date: newDocument.publication_date,
+            genre: newDocument.genre,
+            description: newDocument.description,
+            publisher: newDocument.publisher,
+        }
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ message: "Document added successfully" });
+
+        await documentModel.findOne({ISBN: newDocument.ISBN}).then((value) => {
+            newDocument._id = value.id;
+        });
+    });
+
+    it("with existing document", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/add-document";
+
+        req.body = {
+            title: newDocument.title,
+            ISBN: newDocument.ISBN,
+            author: newDocument.author,
+            publication_date: newDocument.publication_date,
+            genre: newDocument.genre,
+            description: newDocument.description,
+            publisher: newDocument.publisher,
+        }
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "Document with same ISBN already exists" });
+    });
+
+});
+
+describe("'/api/documentDB/create-document-copy", () => {
+
+    it("with document inside collection", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/create-document-copy";
+
+        req.body = {
+            documentId: newDocument._id,
+        };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ message: "Document copy successfully" });
+    });
+
+    it("with document not existing in collection", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/create-document-copy";
+
+        req.body = {
+            documentId: "65b997620706773e6a3f31aa",
+        };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "Document doesn't exist" });
+    });
+
+});
+
+// describe("'/api/documentDB/", () => {
+
+//     it("with new document", async () => {
+//         const {req, res} = mockRequestResponse("POST");
+
+//         req.url="/api/documentDB/";
+
+//         req.body = {
+//             _id: "65b459485cb533882222ef95",
+//         };
+        
+//         await gatewaysHandler(req, res);
+//         expect(res.statusCode).toBe(200);
+//         expect((res as any)._getJSONData()).toEqual({ message: "User doesn't exist" });
+//     })
+
+
+// });
