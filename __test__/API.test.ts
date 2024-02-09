@@ -9,6 +9,8 @@ import User from "@/app/models/userModel";
 import { connectDB } from '@/configs/dbConfig';
 import documentModel from '@/app/models/documentModel';
 import documentCopiesModel from '@/app/models/documentCopiesModel';
+import reservationModel from '@/app/models/reservationModel';
+import loansModel from '@/app/models/loansModel';
 
 axios.defaults.baseURL = "http://localhost:3000";
 
@@ -29,8 +31,8 @@ const userData : user = {
     surname:"Rossi",
     codiceFiscale:"fdffsddf466fdfaa",
     dateOfBirth:"2012-03-24T00:00:00.000Z",
-    email:"test1@gmail.com",
-    password: "mail",
+    email:"test1@mail.com",
+    password: "test",
     isVerified: false,
     isActive: false
 }
@@ -60,6 +62,10 @@ beforeAll(async () => {
 afterAll(async () => {
 
     // delete all testing elements
+    await loansModel.deleteMany({userId: userData._id}).exec();
+
+    await reservationModel.deleteMany({userId: userData._id}).exec();
+
     await documentCopiesModel.deleteMany({documentId: newDocument._id}).exec();
 
     await documentModel.deleteOne({_id: newDocument._id}).exec();
@@ -440,7 +446,7 @@ describe("'/api/account/information/modify' testing", () => {
 
 });
 
-describe("'/api/documentDB/add-document", () => {
+describe("'/api/documentDB/add-document' testing", () => {
 
     it("with new document", async () => {
         const {req, res} = mockRequestResponse("POST");
@@ -488,7 +494,7 @@ describe("'/api/documentDB/add-document", () => {
 
 });
 
-describe("'/api/documentDB/create-document-copy", () => {
+describe("'/api/documentDB/create-document-copy' testing", () => {
 
     it("with document inside collection", async () => {
         const {req, res} = mockRequestResponse("POST");
@@ -502,6 +508,9 @@ describe("'/api/documentDB/create-document-copy", () => {
         await gatewaysHandler(req, res);
         expect(res.statusCode).toBe(200);
         expect((res as any)._getJSONData()).toEqual({ message: "Document copy successfully" });
+        
+        //make two copies, one for cancel-reservation testing and another for loan testing
+        await gatewaysHandler(req, res);
     });
 
     it("with document not existing in collection", async () => {
@@ -520,21 +529,142 @@ describe("'/api/documentDB/create-document-copy", () => {
 
 });
 
-// describe("'/api/documentDB/", () => {
+describe("'/api/documentDB/reserve-document' testing", () => {
 
-//     it("with new document", async () => {
-//         const {req, res} = mockRequestResponse("POST");
+    it("with available document", async () => {
+        const {req, res} = mockRequestResponse("POST");
 
-//         req.url="/api/documentDB/";
+        const token: string = jwt.sign({id: userData._id}, process.env.jwt_secret!);
 
-//         req.body = {
-//             _id: "65b459485cb533882222ef95",
-//         };
+        req.headers.cookie = `token=${token}`;
+
+        req.url="/api/documentDB/reserve-document";
+
+        req.body = { documentId: newDocument._id };
         
-//         await gatewaysHandler(req, res);
-//         expect(res.statusCode).toBe(200);
-//         expect((res as any)._getJSONData()).toEqual({ message: "User doesn't exist" });
-//     })
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ message: "reservation made succesfully" });
+
+        //make two reservations, one for cancel-reservation testing and another for loan testing
+        await gatewaysHandler(req, res);
+    });
+
+    it("with unavailable document", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        const token: string = jwt.sign({id: userData._id}, process.env.jwt_secret!);
+
+        req.headers.cookie = `token=${token}`;
+
+        req.url="/api/documentDB/reserve-document";
+
+        req.body = { documentId: newDocument._id };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "No available documents exist" });
+    });
+
+});
+
+describe("'/api/documentDB/cancel-reservation' testing", () => {
+
+    var resId: string;
+
+    it("with existing reservation", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/cancel-reservation";
+
+        const reservationId = await reservationModel.findOne({userId: userData._id});
+
+        resId = reservationId;
+
+        req.body = { reservationId: reservationId };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ message: "Succesfully deleted" });
+    });
+
+    it("with already deleted reservation", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/cancel-reservation";
+
+        req.body = { reservationId: resId };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "Failed to fetch reservation" });
+    });
 
 
-// });
+});
+
+describe("'/api/documentDB/loan-document' testing", () => {
+
+    it("with existing reservation", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/loan-document";
+
+        const reservationId = await reservationModel.findOne({userId: userData._id});
+
+        req.body = { reservationId: reservationId };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ message: "Succesfully loaned" });
+    });
+
+    it("with non existent reservation", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/loan-document";
+
+        req.body = { reservationId: "65c0dc780b55f3bdcbf9f234" };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "Failed to fetch reservation" });
+    });
+
+
+});
+
+describe("'/api/documentDB/end-loan' testing", () => {
+
+    var loId: string;
+
+    it("with existing loan", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/end-loan";
+
+        const loanId = await loansModel.findOne({userId: userData._id});
+
+        loId = loanId;
+
+        req.body = { loanId: loanId };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(200);
+        expect((res as any)._getJSONData()).toEqual({ message: "Loan successfully ended" });
+    });
+
+    it("with already ended loan", async () => {
+        const {req, res} = mockRequestResponse("POST");
+
+        req.url="/api/documentDB/end-loan";
+
+        req.body = { loanId: loId };
+        
+        await gatewaysHandler(req, res);
+        expect(res.statusCode).toBe(400);
+        expect((res as any)._getJSONData()).toEqual({ message: "Failed to fetch loan" });
+    });
+
+
+});
