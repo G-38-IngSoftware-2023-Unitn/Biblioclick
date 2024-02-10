@@ -1,10 +1,11 @@
 'use client';
 import { getAntdFieldRequiredRule } from '@/app/helpers/validation';
-import { Button, Form, message } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import Link from 'next/link'
 import React from 'react'
 import axios from "@/node_modules/axios/index";
 import { useRouter } from "@/node_modules/next/navigation";
+import TextArea from 'antd/es/input/TextArea';
 
 interface documentType {
     title: string;
@@ -23,7 +24,7 @@ function AddDocument() {
     try {
         await axios.post("/api/documentDB/add-document", values);
         message.success("Succesfully added new document");
-        location.reload();
+        router.push('/create-copy');
     } catch (error: any) {
         message.error(error.response.data.message);
     }
@@ -37,25 +38,25 @@ function AddDocument() {
                 <br/>
 
                 <Form.Item name="title" label="title" rules={[{ required: true }]}>
-                    <input type='text' />
+                <Input/> 
                 </Form.Item>
                 <Form.Item name="ISBN" label="ISBN" rules={[{ required: true }]}>
                     <input type='number' />
                 </Form.Item>
                 <Form.Item name="author" label="author" rules={[{ required: true }]}>
-                    <input type='text' />
+                <Input/> 
                 </Form.Item>
                 <Form.Item name="publisher" label="publisher">
-                    <input type='text' />
+                <Input/> 
                 </Form.Item>
                 <Form.Item name="publication_date" label="publication_date" >
                     <input type='date' />
                 </Form.Item>
                 <Form.Item name="genre" label="genre" >
-                    <input type='text' />
+                    <Input/> 
                 </Form.Item>
                 <Form.Item name="description" label="description">
-                    <input type='text' />
+                    <TextArea rows={5} />
                 </Form.Item>
 
                 <Button type="primary" htmlType="submit" block className="text-black">

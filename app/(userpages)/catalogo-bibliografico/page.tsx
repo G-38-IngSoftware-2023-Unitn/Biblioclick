@@ -27,7 +27,7 @@ export default async function Catalogo({
 
     const query2 = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const itemsPerPage = Number(searchParams?.ippg) || 10;
+    const itemsPerPage = Number(searchParams?.ippg) || 4;
 
     const numberOfDocs = await fetchDocumentsAmount(query2);
 

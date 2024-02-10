@@ -1,6 +1,6 @@
 'use client';
 import { getAntdFieldRequiredRule } from '@/app/helpers/validation';
-import { Button, Checkbox, Form, message } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import React from 'react'
 import axios from "@/node_modules/axios/index";
 import { useRouter } from "@/node_modules/next/navigation";
@@ -30,7 +30,7 @@ function Register() {
             <Form className='w-[500px] gap-5' layout='vertical' onFinish={onRegister} >
 
                 <Form.Item name="username" label="username" rules={getAntdFieldRequiredRule("Please input username")}>
-                    <input type='text' />
+                <Input/> 
                 </Form.Item>
                 <Form.Item name="password" label="Password" rules={getAntdFieldRequiredRule("Please input your password")}>
                     <input type='password' />

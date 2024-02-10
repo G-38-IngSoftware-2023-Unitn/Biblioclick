@@ -1,6 +1,6 @@
 'use client';
 import { getAntdFieldRequiredRule } from '@/app/helpers/validation';
-import { Button, Form, message } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import Link from 'next/link'
 import React from 'react'
 import axios from "@/node_modules/axios/index";
@@ -41,10 +41,10 @@ function Register() {
                 <br />
 
                 <Form.Item name="name" label="Name" rules={getAntdFieldRequiredRule("Please input your name")}>
-                    <input type='text' />
+                <Input/> 
                 </Form.Item>
                 <Form.Item name="surname" label="Surname" rules={getAntdFieldRequiredRule("Please input your surname")}>
-                    <input type='text' />
+                <Input/> 
                 </Form.Item>
                 <Form.Item name="email" label="Email" rules={getAntdFieldRequiredRule("Please input your email")}>
                     <input type='email' />

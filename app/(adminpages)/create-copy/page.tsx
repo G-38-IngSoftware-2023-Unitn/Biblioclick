@@ -1,6 +1,6 @@
 'use client';
 import { getAntdFieldRequiredRule } from '@/app/helpers/validation';
-import { Button, Form, message } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import Link from 'next/link'
 import React from 'react'
 import axios from "@/node_modules/axios/index";
@@ -34,7 +34,7 @@ function AddDocument() {
                 <br/>
 
                 <Form.Item name="documentId" label="documentId" rules={[{ required: true }]}>
-                    <input type='text' />
+                <Input/> 
                 </Form.Item>
 
                 <Button type="primary" htmlType="submit" block className="text-black">

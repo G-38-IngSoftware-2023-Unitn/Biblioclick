@@ -33,7 +33,7 @@ export default async function TableSearchElement(props: any) {
                 </div>
                 <div className="px-5 grow">
                     <p className="font-semibold text-xl mb-0.5 mt-2">{doc?.title}</p>
-                    <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date.substring(0,4)}</p>
+                    <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date?.substring(0,4)}</p>
                     <p className="italic text-blue-900 font-medium mt-1.5">{doc?.author}</p>
                     <div className="flex flex-row gap-x-5 mt-2">
                         <ReserveButton avail={(doc?.loanable - (doc?.loanedDocuments + doc?.reservedDocuments))} docId={doc?._id.toString()}/>

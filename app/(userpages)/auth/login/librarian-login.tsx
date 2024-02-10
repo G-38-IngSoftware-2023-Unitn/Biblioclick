@@ -1,7 +1,7 @@
 'use client';
 import React from "react";
 import { getAntdFieldRequiredRule } from "@/app/helpers/validation";
-import { Button, Form, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "@/node_modules/next/navigation";
 import axios from "@/node_modules/axios/index";
@@ -35,7 +35,7 @@ function LibrarianLogin() {
     return (
             <Form className='w-[500px] gap-5 items-center' layout='vertical' onFinish={onLogin}>
                 <Form.Item name="username" label="Librarian username" rules={getAntdFieldRequiredRule("Please input your username!")}>
-                    <input type="text" />
+                <Input/> 
                 </Form.Item>
 
                 <Form.Item name="password" label="Password" rules={getAntdFieldRequiredRule("Please input your password!")}>
