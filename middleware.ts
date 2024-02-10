@@ -16,17 +16,16 @@ export function middleware(request:NextRequest) {
         isLibrarianRoute = true;
     }
     // if the token is not present and the route is not public, redirect to login
+    const isLoggedIn = request.cookies.get("isLoggedIn")?.value || "";
     const token = request.cookies.get("token")?.value || "";
-    const loggedIn = (request.cookies.get("isLoggedIn")?.value == "true") ? true : false;
     const librarianLoggedIn = request.cookies.get("librarianToken")?.value || "";
-    const isLoggedIn = token && loggedIn;
 
-    if ((!loggedIn && !isPublicRoute) || (!librarianLoggedIn && isLibrarianRoute)){
+    if ((!token && !isPublicRoute) || (!librarianLoggedIn && isLibrarianRoute)){
         return NextResponse.redirect(new URL("/auth/login", request.url));
     }
 
     //if the token is present and the route is public, redirect to home
-    if ((loggedIn && isPublicRoute) || (!librarianLoggedIn && isLibrarianRoute)){
+    if ((token && isPublicRoute) || (!librarianLoggedIn && isLibrarianRoute)){
         return NextResponse.redirect(new URL("/", request.url));
     }
 

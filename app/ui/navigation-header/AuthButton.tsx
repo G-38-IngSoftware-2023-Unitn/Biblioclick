@@ -2,23 +2,22 @@
 import { LoginOutlined, UserOutlined } from '@ant-design/icons';
 import {Button, message } from "antd";
 import Link from "next/link";
-import { cookies } from "next/headers"
-import jwt from "jsonwebtoken";
 import React, { ReactElement, useEffect, useState } from "react";
-import axios from 'axios';
 import LogoutButton from './LogoutButton';
-import useUserClient from '@/app/helpers/useUserClient';
+import Cookies from "js-cookie";
 
 
 export default function AuthButton() {
 
-    const user = useUserClient();
+    const [loggedIn, setToken] = useState<boolean>();
+    useEffect(() => {
+        setToken(Cookies.get('isLoggedIn')==="true" ? true : false);
+    }, []);
 
-    if (user === true) return (
+    if (loggedIn === true) return (
         <span>
             <Link href="/account/information">
                 <Button type="primary" icon={ <UserOutlined />} size="middle" shape='circle' className="text-black mr-5"/>
-                
             </Link>
             <LogoutButton/>
         </span>

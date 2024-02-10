@@ -26,6 +26,7 @@ export async function DELETE(){
     });
     // Remove the cookie
     response.cookies.delete("token");
+    response.cookies.delete("librarianToken");
     response.cookies.set("isLoggedIn", "false");
     
     return response;

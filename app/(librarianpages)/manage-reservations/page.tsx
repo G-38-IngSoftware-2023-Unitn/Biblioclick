@@ -25,7 +25,6 @@ export default function LoansReservation() {
             await axios.get("/api/librarian/fetch-reservations").then((response) => {
                 setUserData(response.data.data);
             });
-            location.reload();
         } catch (error: any) {
             location.reload();
             message.error(error.response.data.message);

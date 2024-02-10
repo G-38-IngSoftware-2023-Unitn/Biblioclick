@@ -3,9 +3,9 @@ import jwt, { TokenExpiredError } from "jsonwebtoken";
 
 
 
-export const validateJWT = async (request: NextRequest) => {
+export const validateJWT = async (request: NextRequest, tokenName: string = "token") => {
     try {
-        const token = request.cookies.get("token")?.value || "";
+        const token = request.cookies.get(tokenName)?.value || "";
         if (!token) {
             throw new Error("No token provided");
         }

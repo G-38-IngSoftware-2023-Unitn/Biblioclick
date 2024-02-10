@@ -3,6 +3,8 @@ import useUserClient from "@/app/helpers/useUserClient";
 import { Button, Tooltip, message } from "antd";
 import axios from "axios";
 import { useRouter } from "@/node_modules/next/navigation";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 
 export default function ReserveButton(props: any) {
@@ -20,10 +22,14 @@ export default function ReserveButton(props: any) {
             message.error(error.response.data.message);
         }
     }
+    const [loggedIn, setToken] = useState<boolean>();
 
-    const isLoggedIn = useUserClient();
+    useEffect(() => {
+        setToken(Cookies.get('isLoggedIn')==="true" ? true : false);
+    }, []);
 
-    if (isLoggedIn && props?.avail > 0) return (
+
+    if (loggedIn && props?.avail > 0) return (
         <Button onClick={onReservation}>
             Available for loan: <strong> {props?.avail}</strong>
         </Button>

@@ -24,8 +24,7 @@ function LibrarianLogin() {
             setLoading(true);
             await axios.post("/api/auth/login/librarian-login", values);
             message.success("Login successful");
-            router.push("/");
-            location.reload();
+            router.push("/user-verification");
         } catch (error: any) {
             message.error(error.response.data.message);
         } finally {
@@ -46,10 +45,6 @@ function LibrarianLogin() {
                 <Button type="primary" htmlType="submit" block loading={loading} className="text-black">
                 Login
                 </Button>
-
-                <Link href="/auth/register" className="text-primary">
-                    Don&apos;t have an account? Register
-                </Link>
             </Form>
     )
 }
