@@ -1,5 +1,6 @@
 import { connectDB } from "@/configs/dbConfig";
 import DocInformation from "@/app/models/documentModel";
+import documentCopiesModel from "@/app/models/documentCopiesModel";
 import { NextRequest, NextResponse } from 'next/server';
 
 connectDB();
@@ -12,8 +13,8 @@ connectDB();
  *              - LibrarianTokenAuth: []
  *          tags:
  *              - documentDB
- *          summary: Add new document
- *          description: If logged in as admin, creates new document and adds it to the database
+ *          summary: Add new document and creates one copy
+ *          description: If logged in as admin, creates new document and adds it to the database, subsequently creates a copy and adds it as well
  *          requestBody:
  *              description: Document information
  *              required: true
@@ -61,6 +62,15 @@ export async function POST(request: NextRequest) {
         const newDoc = new DocInformation(reqBody);
 
         await newDoc.save();
+
+        const newDocCopy = new documentCopiesModel({
+            documentId: newDoc._id,
+            reservationStatus: false,
+            loanStatus: false,
+            isLoanable: true,
+        });
+
+        await newDocCopy.save();
 
         return NextResponse.json({
             message: "Document added successfully",
