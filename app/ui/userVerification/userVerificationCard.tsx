@@ -41,7 +41,7 @@ export default function UserVerificationCard(props: any) {
             <UserInputEdit value={props.userData?.name} name="name" label="Name" />
             <UserInputEdit value={props.userData?.surname} name="surname" label="Surname" />
             <UserInputEdit value={props.userData?.codiceFiscale} type="codFisc" name="codiceFiscale" label="Codice Fiscale" />
-            <UserInputEdit value={JSON.stringify(props.userData?.dateOfBirth).substring(1, 11)} name="dateOfBirth"
+            <UserInputEdit value={JSON.stringify(props.userData?.dateOfBirth)?.substring(1, 11)} name="dateOfBirth"
                 label="Date of Birth" type="date" />
             <p> Verified: {JSON.stringify(props.userData?.isVerified)} </p>
             <p> Active: {JSON.stringify(props.userData?.isActive)} </p>

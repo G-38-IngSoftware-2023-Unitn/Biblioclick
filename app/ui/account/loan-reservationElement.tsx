@@ -56,7 +56,7 @@ export default function LoanReservationElement(props: any) {
             </div>
             <div className="px-5 grow">
                 <p className="font-semibold text-xl mb-0.5 mt-2">{doc?.title}</p>
-                <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date.substring(0,4)}</p>
+                <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date?.substring(0,4)}</p>
                 <p className="italic text-blue-900 font-medium mt-1.5">{doc?.author}</p>
             </div>
             <div className="mr-4 mt-1 flex flex-col gap-2">
@@ -91,7 +91,7 @@ export default function LoanReservationElement(props: any) {
             </div>
             <div className="px-5 grow">
                 <p className="font-semibold text-xl mb-0.5 mt-2">{doc?.title}</p>
-                <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date.substring(0,4)}</p>
+                <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date?.substring(0,4)}</p>
                 <p className="italic text-blue-900 font-medium mt-1.5">{doc?.author}</p>
             </div>
             <div className="mr-4 mt-1 flex flex-col gap-2">

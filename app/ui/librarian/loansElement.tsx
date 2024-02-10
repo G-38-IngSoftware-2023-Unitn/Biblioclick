@@ -55,7 +55,7 @@ export default function LoanElement(props: any) {
             </div>
             <div className="px-5 grow">
                 <p className="font-semibold text-xl mb-0.5 mt-2">{doc?.title}</p>
-                <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date.substring(0,4)}</p>
+                <p className="mt-0 text-slate-400 text-xs">{doc?.publisher + ", " + doc?.publication_date?.substring(0,4)}</p>
                 <p className="italic text-blue-900 font-medium mt-1.5">{doc?.author}</p>
                 <p className="font-semibold text-base mb-0.5 mt-2.5">User Id: {doc?.userId}</p>
             </div>

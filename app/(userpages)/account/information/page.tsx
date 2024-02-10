@@ -46,7 +46,7 @@ function AccountInformation() {
                 <UserInputEdit value={userData?.name} name="name" label="Name" />
                 <UserInputEdit value={userData?.surname} name="surname" label="Surname" />
                 <UserInputEdit value={userData?.codiceFiscale} type="codFisc" name="codiceFiscale" label="Codice Fiscale" />
-                <UserInputEdit value={JSON.stringify(userData?.dateOfBirth).substring(1, 11)} name="dateOfBirth"
+                <UserInputEdit value={JSON.stringify(userData?.dateOfBirth)?.substring(1, 11)} name="dateOfBirth"
                     label="Date of Birth" type="date" />
                 <Button type="primary" htmlType="submit" block className="text-black">
                     Modify
