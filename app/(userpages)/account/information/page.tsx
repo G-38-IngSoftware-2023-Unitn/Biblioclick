@@ -30,7 +30,7 @@ function AccountInformation() {
         try {
             //console.log(values);
             await axios.post("/api/account/information", values);
-            router.push("/account");
+            router.push("/account/information");
             location.reload();
         } catch (error: any) {
             message.error(error.response.data.message);
