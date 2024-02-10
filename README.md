@@ -1,9 +1,5 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-
-## Node.js packages to install
-npm i antd axios redux react-redux @reduxjs/toolkit mongoose bcryptjs jsonwebtoken js-cookie @types/js-cookie @ant-design/icons jest jest-environment-jsdom @testing-library/react @testing-library/jest-dom swagger-ui-react next-swagger-doc
-
 ## Getting Started
 
 First, run the development server:
