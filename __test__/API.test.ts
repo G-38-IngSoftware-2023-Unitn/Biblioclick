@@ -423,12 +423,12 @@ describe("'/api/user-verification/' testing", () => {
 
 });
 
-describe("'/api/account/information/modify' testing", () => {
+describe("'/api/account/information' testing", () => {
 
     it("with existing user", async () => {
         const {req, res} = mockRequestResponse("POST");
 
-        req.url="/api/account/information/modify";
+        req.url="/api/account/information";
 
         req.body = {
             _id: userData._id,
@@ -442,7 +442,7 @@ describe("'/api/account/information/modify' testing", () => {
     it("with non existing user", async () => {
         const {req, res} = mockRequestResponse("POST");
 
-        req.url="/api/account/information/modify";
+        req.url="/api/account/information";
 
         req.body = {
             _id: "65b459485cb533882222ef95",

@@ -29,7 +29,7 @@ function AccountInformation() {
     const onModify = async (values: userType) => {
         try {
             //console.log(values);
-            await axios.post("/api/account/information/modify", values);
+            await axios.post("/api/account/information", values);
             router.push("/account");
             location.reload();
         } catch (error: any) {

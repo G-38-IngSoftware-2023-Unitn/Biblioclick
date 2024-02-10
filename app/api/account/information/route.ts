@@ -19,7 +19,7 @@ interface userType {
 
 /**
  * @swagger
- *  /api/account/information/modify:
+ *  /api/account/information:
  *      post:
  *          security:
  *              - UserTokenAuth: []
