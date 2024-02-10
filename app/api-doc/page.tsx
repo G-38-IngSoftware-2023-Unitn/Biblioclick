@@ -3,9 +3,9 @@ import ReactSwagger from './react-swagger';
 
 export default async function IndexPage() {
   const spec = await getApiDocs();
-  return (
+  if (spec) return (
     <section className="container">
-      {/* <ReactSwagger spec={spec} /> */}
+      <ReactSwagger spec={spec} />
     </section>
   );
 }
