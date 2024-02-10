@@ -39,7 +39,7 @@ export default async function Page( { params }: {
                             <p className="my-1 mr-5"><span className="text-slate-400">Publisher:</span> {doc?.publisher}</p>
                             <p className="my-1 mr-5"><span className="text-slate-400">ISBN:</span> {doc?.ISBN}</p>
                             <p className="my-1 mr-5"><span className="text-slate-400">Genre:</span> {doc?.genre}</p>
-                            <p className="my-1 mr-5"><span className="text-slate-400">Date:</span> {JSON.stringify(doc?.publication_date).substring(1,5)}</p>
+                            <p className="my-1 mr-5"><span className="text-slate-400">Date:</span> {JSON.stringify(doc?.publication_date)?.substring(1,5)}</p>
                         </div>
                         <p><span className="text-slate-400">Description:</span> {doc?.description}</p>
                     </div>
